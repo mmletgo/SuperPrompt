@@ -52,8 +52,9 @@
      touch Worknotes/stage-3-interface-layout-and-api-definition.md  
      touch Worknotes/stage-4-ui-design.md  
      touch Worknotes/stage-5-frontend-development.md  
-     touch Worknotes/stage-6-backend-development-and-integration.md  
-     touch Worknotes/stage-7-integration-deployment-and-launch.md
+     touch Worknotes/stage-6-backend-development.md
+     touch Worknotes/stage-7-integration.md
+     touch Worknotes/stage-8-integration-deployment-and-launch.md
 
      echo "协作目录结构创建完成。"
   4. **提醒用户:**
@@ -144,99 +145,178 @@
 
 * **目标:** 创建一个按组件和页面划分的、优先级明确的前端开发任务清单。  
 * **智能体:** `sprint-prioritizer`  
-* **任务:** 调用 `sprint-prioritizer`。**输入宏观目标：“实现应用的所有前端功能”。**`sprint-prioritizer` 必须读取`designs/ux/`、`designs/ui/`、`designs/ui/design-spec.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`，然后输出一份前端开发子任务清单，记录在 `Worknotes/stage-5-frontend-development.md` 中。**此清单必须按依赖关系排序，没有依赖的任务排在最前面。每个任务都应明确列出其依赖的任务编号。**子任务清单需按以下任务类别顺序组织：1. 组件开发；2. 根据 `docs/api-spec.md` 创建模拟 API；3. 应用程序布局和页面开发；4. 将 UI 连接到模拟 API。  
+* **任务:** 调用 `sprint-prioritizer`。**输入宏观目标：“实现应用的所有前端功能”。**`sprint-prioritizer` 必须读取`designs/ux/`、`designs/ui/`、`designs/ui/design-spec.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`，然后输出一份前端开发子任务清单，记录在 `Worknotes/stage-5-frontend-development.md` 中。**此清单必须按依赖关系排序，没有依赖的任务排在最前面。每个任务都应明确列出其依赖的任务编号。每个子任务都应有”完成状态“字段，初始是”未开始“**子任务清单需按以下任务类别顺序组织：1. 组件开发；2. 根据 `docs/api-spec.md` 创建模拟 API；3. 应用程序布局和页面开发；4. 将 UI 连接到模拟 API。  
 
 #### **指令 2: 执行前端开发**
 
-* **目标:** 基于高保真设计稿，实现所有前端界面和交互逻辑，连接到模拟 API，并确保代码质量和项目可运行性。  
-* **智能体:** `frontend-developer`和`test-writer-fixer`两者并行执行 
-* **任务说明:** 我已经使用脚手架工具初始化了项目，项目代码目前存在do-j-pm/文件夹里，你必须用 `frontend-developer`和`test-writer-fixer`完成任务。  
-* **任务执行 (并行测试驱动闭环):** 对于清单中的**每一项子任务**，`frontend-developer` 和 `test-writer-fixer` 将并行工作，形成一个高效的闭环：  
-  1. **并行开发与测试用例编写:**  
-     * **`frontend-developer`:** 根据`Worknotes/stage-5-frontend-development.md`中的任务需求和`designs/ui/design-spec.md`中的设计规范开始进行功能编码，**注意，要完全按照`designs/ux/`里的布局和页面实现，要完全按照`designs/ui/`中的UI效果实现，要有UI效果和微动画，调用`playwright` mcp测试**。  
-     * **`test-writer-fixer`:** 同时，根据`Worknotes/stage-5-frontend-development.md`中的任务需求和验收标准，开始编写对应的单元测试和组件测试用例。  
-  2. **执行测试:** 一旦 `frontend-developer` 交付了初步代码，立即使用 `test-writer-fixer` 编写好的测试用例对新代码进行验证。  
-  3. **验证与修复:** 如果测试失败，`test-writer-fixer` 将失败报告和日志返回给 `frontend-developer`。`frontend-developer` 必须修复问题，然后重新进入上一步的测试环节。此循环必须持续，直到当前子任务的所有测试都通过。  
-  4. 只有在当前子任务通过所有测试后，团队才能开始清单中的**下一项子任务**，并将 `Worknotes/stage-5-frontend-development.md` 中对应的子任务状态更新为已完成状态。  
-* **完成标准:** `frontend-developer`和`test-writer-fixer` 在完成所有子任务，停止工作前，**必须确保项目能够通过 `npm run dev`成功启动，并且访问每个页面时(调用`playwright` mcp测试，确保页面正常访问，布局、UI、微动画都正常显示，页面跳转正常)，浏览器开发者工具的控制台中都没有任何错误**。  
-* **输入/输出规范:**  
-  * **输入:** `frontend-developer`和`test-writer-fixer` 读取 `designs/ux/`、`designs/ui/`、`designs/ui/design-spec.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、项目初始化后生成的代码骨架和 `Worknotes/stage-5-frontend-development.md`。
-  * **输出:** 所有开发完成的前端代码，提交到项目的代码仓库中，每完成一个前端开发子任务，就将 `Worknotes/stage-5-frontend-development.md` 中对应的子任务状态更新为已完成状态。  
-* **交接文档更新:** `frontend-developer` 在完成所有任务并满足“完成标准”后，必须在 `Worknotes/stage-5-frontend-development.md` 中追加工作摘要、产出文件位置和对下一阶段的建议。  
-* **完成度验证机制:** 为确保任务无遗漏，当 `frontend-developer` 与 `test-writer-fixer` 宣称完成所有工作后，必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是对照 `Worknotes/stage-5-frontend-development.md` 中的原始任务清单进行最终审核。若发现未完成项，则必须将任务打回，并要求 `frontend-developer` 与 `test-writer-fixer` 继续工作，直至所有任务被确认为100%完成。
+* **目标:** 基于高保真设计稿，通过动态工作流调度，高效、高质量地完成所有前端开发任务，并确保代码通过严格的测试验证。
+* **智能体:** `frontend-developer`, `test-writer-fixer`
+* **任务说明:** 采用动态工作流调度。你根据待处理任务的数量，在“单任务并行模式”和“多任务分批并行模式”之间自动切换。
 
-### **第六阶段：后端开发与集成 (Backend Development & Integration)**
+* **工作流调度:**
+  1. 你持续监控 `Worknotes/stage-5-frontend-development.md`，筛选出所有状态为“未开始”且（无依赖任务或所有依赖任务均已“已完成”）的任务，注意，你要关注这个文件里每个任务**依赖任务**这个字段，这是每个任务所依赖的任务id，你需要根据这个严格确定依赖关系。
+  2. **如果符合条件的任务数量恰好为 1:** 启动 **“单任务并行模式”**。
+  3. **如果符合条件的任务数量大于 1:** 启动 **“多任务分批并行模式”**。
+
+* **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
+  * **调度:** 你针对该任务，同时调用 `frontend-developer` 和 `test-writer-fixer`，并将 `Worknotes/stage-5-frontend-development.md` 中的任务状态更新为“进行中”。
+  * **并行执行:**
+    * `frontend-developer`: 立即开始功能开发。
+    * `test-writer-fixer`: 立即开始编写测试用例，并确保所有测试文件都存储在 `tests/` 目录下。
+  * **开发-测试循环:**
+    1. `frontend-developer` 完成初步开发后，通知已准备好的 `test-writer-fixer`。
+    2. `test-writer-fixer` 使用已编写的测试用例进行测试。
+    3. **如果测试失败:** `test-writer-fixer` 将失败报告和日志保存到 `tests/reports/` 目录，然后将报告反馈给 `frontend-developer`。`frontend-developer` 修复问题，然后重新进入上一步的测试环节。
+    4. **如果测试通过:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.md` 中的任务状态更新为“已完成”。
+  * **循环结束:** 任务完成后，流程返回 **“工作流调度”** 步骤。
+
+* **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
+  * **步骤 1: 并行功能开发**
+    * **调度:** 你为所有符合条件的任务（无依赖任务或所有依赖任务均已“已完成”）并行调用 `frontend-developer`，并将 `Worknotes/stage-5-frontend-development.md` 中的任务状态更新为“进行中”。
+    * **执行:** 每个 `frontend-developer` 根据任务需求完成功能开发。
+    * **状态更新:** 开发完成后，`frontend-developer` 将 `Worknotes/stage-5-frontend-development.md` 中对应任务的状态更新为“待测试”。
+  * **步骤 2: 并行测试**
+    * **调度:** 你确认本批所有开发任务均已完成后，为所有“待测试”的任务并行调用 `test-writer-fixer`。
+    * **执行:** 每个 `test-writer-fixer` 编写并执行测试用例。所有新编写的测试用例文件都必须存储在 `tests/` 目录下。
+    * **状态更新:**
+      * **如果测试通过:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.md` 中的任务状态更新为“已完成”。
+      * **如果测试失败:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.md` 中的任务状态更新为“待修复”，并将失败日志保存到 `tests/reports/` 目录。
+  * **步骤 3: 并行修复与回归测试**
+    * **调度:** 你确认本批所有测试任务均已完成后，为所有“待修复”的任务并行调用 `frontend-developer`。
+    * **执行:** 每个 `frontend-developer` 根据 `tests/reports/` 目录下的本任务对应的失败日志修复 Bug。
+    * **状态更新:** 修复完成后，`frontend-developer` 将 `Worknotes/stage-5-frontend-development.md` 中的任务状态重新更新为“待测试”。
+    * **循环:** 流程将自动返回 **步骤 2: 并行测试**，形成一个“测试-修复”的循环，直到本批所有任务都变为“已完成”，流程返回 **“工作流调度”** 步骤。
+
+* **完成标准:**
+  * `Worknotes/stage-5-frontend-development.md` 中的所有任务状态均为 **“已完成”**。
+  * 项目能够通过 `npm run dev` 成功启动，并且在浏览器中访问所有页面和核心功能时，开发者工具的控制台中没有任何错误。
+  * 所有 UI 效果、布局、微动画均需符合 `designs/` 目录下的设计规范，并通过 `playwright` mcp 测试验证。
+
+* **输入/输出规范:**
+  * **输入:** `frontend-developer` 和 `test-writer-fixer` 读取 `designs/ux/`、`designs/ui/`、`designs/ui/design-spec.md`、`docs/api-spec.md` 和 `Worknotes/stage-5-frontend-development.md`。在修复阶段，`frontend-developer` 还需要读取 `tests/reports/` 目录下的任务对应的日志。
+  * **输出:** 所有开发完成的前端代码提交至代码仓库。所有测试用例均存储在 `tests/` 目录中。测试失败时，报告和日志保存在 `tests/reports/` 目录。`Worknotes/stage-5-frontend-development.md` 的任务状态被实时、准确地更新。
+
+* **交接文档更新:** 在所有任务都标记为“已完成”后，你指派一个 `frontend-developer` 在 `Worknotes/stage-5-frontend-development.md` 中追加最终的工作摘要、对下一阶段的建议和项目运行说明。
+
+* **完成度验证机制:** 为确保任务无遗漏，当所有任务完成后，你必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是最终审核 `Worknotes/stage-5-frontend-development.md` 中的原始任务清单，确保所有任务都已被确认为“已完成”。若发现未完成项，则必须将任务打回，并重新启动相应的开发/修复流程，直至所有任务被确认为100%完成。
+
+### **第六阶段：后端开发 (Backend Development)**
 
 #### **指令 1: 生成任务清单**
 
-* **目标:** 为后端开发和前端集成两个部分创建详细的任务清单。  
-* **智能体:** `sprint-prioritizer`  
-* **任务:** 调用 `sprint-prioritizer`。  
-  1. **输入宏观目标：“根据功能范围和前端需求，实现所有后端API”。**`sprint-prioritizer`必须读取 `docs/prd.md`、`docs/fullstack-architecture.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/schema.md` 和 `Worknotes/stage-5-frontend-development.md`，输出一份详细的、按资源和功能划分的API端点开发任务清单，记录在`Worknotes/stage-6-backend-development.md`中。**此清单必须按依赖关系排序，没有依赖的任务排在最前面。每个任务都应明确列出其依赖的任务编号。**
-  2. 接着，输入宏观目标：“将前端与实时API集成”。`sprint-prioritizer` 需要分析前端代码结构、`docs/api-spec.md`、`Worknotes/stage-5-frontend-development.md` 和 `docs/fullstack-architecture.md`，输出一份按页面或组件划分的、详细的集成子任务清单，记录在`Worknotes/stage-6-integration.md`中。**此清单同样必须按依赖关系排序，并明确列出依赖关系。**  
+* **目标:** 为后端开发创建详细的任务清单。
+* **智能体:** `sprint-prioritizer`
+* **任务:** 调用 `sprint-prioritizer`。
+  * **输入宏观目标：“根据功能范围和前端需求，实现所有后端API”。**`sprint-prioritizer`必须读取 `docs/prd.md`、`docs/fullstack-architecture.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/schema.md` 和 `Worknotes/stage-5-frontend-development.md`，输出一份详细的、按资源和功能划分的API端点开发任务清单，记录在`Worknotes/stage-6-backend-development.md`中。**此清单必须按依赖关系排序，没有依赖的任务排在最前面。每个任务都应明确列出其依赖的任务编号。**
+* **用户确认点:** AI在此暂停，等待用户审核并确认 `Worknotes/stage-6-backend-development.md` 中的任务清单。
 
-#### **指令 2: 执行开发与集成**
+#### **指令 2: 执行后端开发**
 
-* **目标:** 实现所有API端点，并将前端应用与真实的后端API集成。  
-* **智能体:** `backend-architect`和`api-tester`两者并行执行，后端完成后，由`frontend-developer` 负责前端与后端的集成。  
-* **任务说明:** 我已经使用脚手架工具初始化了项目，项目代码目前存在`do-j-pm/`文件夹里。  
-##### 后端任务
-* **任务执行 (后端并行测试驱动闭环):** `backend-architect` 和 `api-tester` 必须严格按照清单顺序，对**每一个API端点**并行执行以下循环：
-  * **输入:** `backend-architect` 和 `api-tester` 需读取 `Worknotes/stage-6-backend-development.md` 中的任务清单，并参考 `docs/api-spec.md` 和 `docs/schema.md` 进行开发和测试。  
-  1. **并行开发与测试用例编写:**  
-     * **`backend-architect`:** 根据 `docs/api-spec.md` 等文档实现该API端点的路由、业务逻辑和数据库操作。  
-     * **`api-tester`:** 同时，根据相同的API规范，为该端点编写自动化功能测试和契约测试用例。  
-  2. **执行测试:** `backend-architect` 完成开发后，立即调用 `api-tester` 执行已编写好的测试。  
-  3. **验证与修复:** 如果测试失败，`api-tester` 将报告返回给 `backend-architect`，后者必须修复问题并重新测试。  
-  4. 只有在当前端点通过所有测试后，才能开始清单中的**下一个端点**的开发。  
-* **输入/输出规范:**  
-  * **输入:** `backend-architect` 和 `api-tester` 读取 `docs/api-spec.md`、`docs/feature-scope.md`、`docs/tech-stack.md`、`docs/schema.md`、项目初始化后生成的代码骨架和 `Worknotes/stage-6-backend-development.md`。
-  * **输出:** 所有开发完成的后端代码，提交到项目的代码仓库中，每完成一个后端开发子任务，就将 `Worknotes/stage-6-backend-development.md` 中对应的子任务状态更新为已完成状态。
-* **后端完成标准:** `docs/feature-scope.md` 中定义的所有功能所需API端点均已实现，并且全部通过了 `api-tester` 的自动化测试。  
-* **完成度验证机制:** 为确保后端任务无遗漏，当 `backend-architect` 与 `api-tester` 宣称完成所有API端点开发和测试后，必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是对照 `Worknotes/stage-6-backend-development.md` 中的后端任务清单进行最终审核。若发现未完成的API端点，则必须将任务打回，并要求 `backend-architect` 与 `api-tester` 继续工作，直至所有后端任务被确认为100%完成。
-* **交接文档更新:**  
-  * `backend-architect` 在完成所有后端任务后，必须在 `Worknotes/stage-6-backend-development.md` 中追加其工作摘要、产出位置和对项目整合的建议。  
-##### 前端任务
+* **目标:** 通过动态工作流调度，高效、高质量地完成所有后端开发任务，并确保代码通过严格的测试验证。
+* **智能体:** `backend-developer`, `api-tester`
+* **任务说明:** 采用动态工作流调度。你根据待处理任务的数量，在“单任务并行模式”和“多任务分批并行模式”之间自动切换。
+
+* **工作流调度:**
+  1. 你持续监控 `Worknotes/stage-6-backend-development.md`，筛选出所有状态为“未开始”且（无依赖任务或所有依赖任务均已“已完成”）的任务，注意，你要关注这个文件里每个任务**依赖任务**这个字段，这是每个任务所依赖的任务id，你需要根据这个严格确定依赖关系。
+  2. **如果符合条件的任务数量恰好为 1:** 启动 **“单任务并行模式”**。
+  3. **如果符合条件的任务数量大于 1:** 启动 **“多任务分批并行模式”**。
+
+* **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
+  * **调度:** 你针对该任务，同时调用 `backend-developer` 和 `api-tester`，并将 `Worknotes/stage-6-backend-development.md` 中的任务状态更新为“进行中”。
+  * **并行执行:**
+    * `backend-developer`: 立即开始 API 端点和业务逻辑的开发。
+    * `api-tester`: 立即开始编写测试脚本（如 Postman 集合、集成测试用例）。
+  * **开发-测试循环:**
+    1. `backend-developer` 完成初步开发后，通知 `api-tester`。
+    2. `api-tester` 使用已编写的测试脚本进行接口测试。
+    3. **如果测试失败:** `api-tester` 将失败报告和日志保存到 `tests/reports/` 目录，然后将报告反馈给 `backend-developer`。`backend-developer` 修复问题，然后重新进入上一步的测试环节。
+    4. **如果测试通过:** `api-tester` 将 `Worknotes/stage-6-backend-development.md` 中的任务状态更新为“已完成”。
+  * **循环结束:** 任务完成后，流程返回 **“工作流调度”** 步骤。
+
+* **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
+  * **步骤 1: 并行功能开发**
+    * **调度:** 你为所有符合条件的任务（无依赖任务或所有依赖任务均已“已完成”）并行调用 `backend-developer`，并将 `Worknotes/stage-6-backend-development.md` 中的任务状态更新为“进行中”。
+    * **执行:** 每个 `backend-developer` 根据任务需求完成 API 开发。
+    * **状态更新:** 开发完成后，`backend-developer` 将 `Worknotes/stage-6-backend-development.md` 中对应任务的状态更新为“待测试”。
+  * **步骤 2: 并行测试**
+    * **调度:** 你确认本批所有开发任务均已完成后，为所有“待测试”的任务并行调用 `api-tester`。
+    * **执行:** 每个 `api-tester` 编写并执行接口测试。
+    * **状态更新:**
+      * **如果测试通过:** `api-tester` 将 `Worknotes/stage-6-backend-development.md` 中的任务状态更新为“已完成”。
+      * **如果测试失败:** `api-tester` 将 `Worknotes/stage-6-backend-development.md` 中的任务状态更新为“待修复”，并将失败日志保存到 `tests/reports/` 目录。
+  * **步骤 3: 并行修复与回归测试**
+    * **调度:** 你确认本批所有测试任务均已完成后，为所有“待修复”的任务并行调用 `backend-developer`。
+    * **执行:** 每个 `backend-developer` 根据 `tests/reports/` 目录下的本任务对应的失败日志修复 Bug。
+    * **状态更新:** 修复完成后，`backend-developer` 将 `Worknotes/stage-6-backend-development.md` 中的任务状态重新更新为“待测试”。
+    * **循环:** 流程将自动返回 **步骤 2: 并行测试**，形成一个“测试-修复”的循环，直到本批所有任务都变为“已完成”，流程返回 **“工作流调度”** 步骤。
+
+* **完成标准:**
+  * `Worknotes/stage-6-backend-development.md` 中的所有任务状态均为 **“已完成”**。
+  * 所有 API 端点均通过 `api-tester` 的验证，符合 `docs/api-spec.md` 的规范。
+  * 后端服务能够成功构建并运行，日志中无启动时错误。
+
+* **输入/输出规范:**
+  * **输入:** `backend-developer` 和 `api-tester` 读取 `docs/api-spec.md`、`docs/schema.md` 和 `Worknotes/stage-6-backend-development.md`。在修复阶段，`backend-developer` 还需要读取 `tests/reports/` 目录下的任务对应的日志。
+  * **输出:** 所有开发完成的后端代码提交至代码仓库。API 测试脚本或集合。`Worknotes/stage-6-backend-development.md` 的任务状态被实时、准确地更新。测试失败时，报告和日志保存在 `tests/reports/` 目录。
+
+* **完成度验证机制:** 为确保任务无遗漏，当所有任务完成后，你必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是最终审核 `Worknotes/stage-6-backend-development.md` 中的原始任务清单，确保所有任务都已被确认为“已完成”。若发现未完成项，则必须将任务打回，并重新启动相应的开发/修复流程，直至所有任务被确认为100%完成。
+
+* **交接文档更新:** 在所有任务都标记为“已完成”后，你指派一个 `backend-developer` 在 `Worknotes/stage-6-backend-development.md` 中追加最终的工作摘要、API 部署和运行说明、以及对下一阶段（前端集成）的建议。
+
+### **第七阶段：前端集成 (Frontend Integration)**
+
+#### **指令 1: 生成任务清单**
+
+* **目标:** 为前端与后端API的集成创建详细的任务清单。
+* **智能体:** `sprint-prioritizer`
+* **任务:** 调用 `sprint-prioritizer`。
+  * **输入宏观目标：“将前端与实时API集成”。**`sprint-prioritizer` 需要分析前端代码结构、`docs/api-spec.md`、`Worknotes/stage-5-frontend-development.md`、`Worknotes/stage-6-backend-development.md` 和 `docs/fullstack-architecture.md`，输出一份按页面或组件划分的、详细的集成子任务清单，记录在`Worknotes/stage-7-integration.md`中。**此清单同样必须按依赖关系排序，并明确列出依赖关系。**
+* **用户确认点:** AI在此暂停，等待用户审核并确认 `Worknotes/stage-7-integration.md` 中的任务清单。
+
+#### **指令 2: 执行前端集成**
+
+* **目标:** 将前端应用与真实的后端API集成。
+* **智能体:** `frontend-developer`
 * **任务执行 (前端集成):** `frontend-developer` 严格按照清单顺序执行以下任务：
-    * **输入:** `frontend-developer` 需读取 `Worknotes/stage-6-integration.md` 中的集成任务清单，并参考 `docs/api-spec.md` 进行开发。  
-  * **任务：将前端与实时 API 集成**  
-    * **操作：** 移除模拟 API 客户端。更新所有前端组件和页面，以便向新创建的后端 API 发出实时请求。为所有服务器交互的加载、错误和成功状态实施适当的状态管理。  
-* **完成度验证机制:** 为确保前端任务无遗漏，当 `frontend-developer` 宣称完成所有集成任务后，必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是对照 `Worknotes/stage-6-integration.md` 中的集成任务清单进行最终审核。若发现未完成的任务，则必须将任务打回，并要求 `frontend-developer` 继续工作，直至所有任务被确认为100%完成。
-* **交接文档更新:**  
-  * `frontend-developer` 在完成集成任务后，必须更新 `Worknotes/stage-6-integration.md` 并添加“前后端集成完成”的最终声明。 
+    * **输入:** `frontend-developer` 需读取 `Worknotes/stage-7-integration.md` 中的集成任务清单，并参考 `docs/api-spec.md` 和 `Worknotes/stage-6-backend-development.md` 进行开发。
+  * **任务：将前端与实时 API 集成**
+    * **操作：** 移除模拟 API 客户端。更新所有前端组件和页面，以便向新创建的后端 API 发出实时请求。为所有服务器交互的加载、错误和成功状态实施适当的状态管理。
+* **完成度验证机制:** 为确保前端任务无遗漏，当 `frontend-developer` 宣称完成所有集成任务后，必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是对照 `Worknotes/stage-7-integration.md` 中的集成任务清单进行最终审核。若发现未完成的任务，则必须将任务打回，并要求 `frontend-developer` 继续工作，直至所有任务被确认为100%完成。
+* **交接文档更新:**
+  * `frontend-developer` 在完成集成任务后，必须更新 `Worknotes/stage-7-integration.md` 并添加“前后端集成完成”的最终声明。
 
-### **第七阶段：联调、部署与上线 (Integration, Deployment & Launch)**
+### **第八阶段：联调、部署与上线 (Integration, Deployment & Launch)**
 
 #### **指令 1: 生成任务清单**
 
-* **目标:** 创建一份详细的、按优先级排序的上线任务清单。  
-* **智能体:** `sprint-prioritizer`  
-* **任务:** 调用 `sprint-prioritizer`。**输入宏观目标：“完成应用的端到端测试，自动化部署并正式上线”。**`sprint-prioritizer` 必须读取 `docs/api-spec.md`、`Worknotes/stage-6-backend-development-and-integration.md`、`docs/tech-stack.md` 和 `docs/fullstack-architecture.md`，然后输出一份详细的、按优先级排序的子任务清单，记录在 `Worknotes/stage-7-integration-deployment-and-launch.md` 中，例如：  
-  1. 执行完整的端到端（E2E）集成测试。  
-  2. 使用基础设施即代码（IaC）配置生产环境。  
-  3. 构建持续集成/持续部署（CI/CD）管道。  
-  4. 部署到预生产（Staging）环境并进行最终验收。  
-  5. 执行向生产环境的正式部署。  
-  6. 设置生产环境的监控、日志和警报系统。  
-  7. 完成上线检查清单并正式发布。  
-* **用户确认点:** AI在此暂停，等待用户审核并确认 `Worknotes/stage-7-integration-deployment-and-launch.md` 中的任务清单。
+* **目标:** 创建一份详细的、按优先级排序的上线任务清单。
+* **智能体:** `sprint-prioritizer`
+* **任务:** 调用 `sprint-prioritizer`。**输入宏观目标：“完成应用的端到端测试，自动化部署并正式上线”。**`sprint-prioritizer` 必须读取 `docs/api-spec.md`、`Worknotes/stage-6-backend-development.md`、`Worknotes/stage-7-integration.md`、`docs/tech-stack.md` 和 `docs/fullstack-architecture.md`，然后输出一份详细的、按优先级排序的子任务清单，记录在 `Worknotes/stage-8-integration-deployment-and-launch.md` 中，例如：
+  1. 执行完整的端到端（E2E）集成测试。
+  2. 使用基础设施即代码（IaC）配置生产环境。
+  3. 构建持续集成/持续部署（CI/CD）管道。
+  4. 部署到预生产（Staging）环境并进行最终验收。
+  5. 执行向生产环境的正式部署。
+  6. 设置生产环境的监控、日志和警报系统。
+  7. 完成上线检查清单并正式发布。
+* **用户确认点:** AI在此暂停，等待用户审核并确认 `Worknotes/stage-8-integration-deployment-and-launch.md` 中的任务清单。
 
 #### **指令 2: 执行部署与上线**
 
-* **目标:** 将应用部署到生产环境，建立监控，并正式发布。  
-* **智能体:** `studio-coach`, `api-tester`, `devops-automator`, `infrastructure-maintainer`, `project-shipper`  
-* **智能体都要输入:** `Worknotes/stage-7-integration-deployment-and-launch.md`
-* **任务执行 (协作流程):**  
-  1. **端到端测试 (E2E Testing):**  
-     * 指令 **`api-tester`**：“读取 `docs/api-spec.md` 和 `Worknotes/stage-6-backend-development-and-integration.md`。针对已完成集成的应用，执行一次完整的端到端测试，模拟真实用户的核心操作流（如注册-\>登录-\>核心功能-\>退出）。验证从UI到数据库的完整链路。将详尽的测试报告保存到 `testing/e2e-report.md`。”  
-  2. **构建自动化部署管道 (CI/CD Pipeline):**  
-     * 指令 **`devops-automator`**：“分析项目的`docs/tech-stack.md`技术栈。创建自动化CI/CD管道（例如，使用GitHub Actions），该管道必须能自动完成测试、构建和部署流程。将CI/CD配置文件（如 .github/workflows/deploy.yml）保存到代码库。”  
-  3. **生产环境准备与监控 (Production Setup):**  
-     * 指令 **`infrastructure-maintainer`**：“根据 `docs/fullstack-architecture.md`和`docs/tech-stack.md`，配置生产环境。设置实时的性能监控、日志聚合和关键错误警报系统。确保应用具备弹性伸缩能力以应对流量高峰。”  
-  4. **正式上线 (Go-Live):**  
-     * 指令 **`project-shipper`**：“这是最终的上线决策。请执行发布前检查清单，确认 `testing/e2e-report.md` 测试通过、CI/CD管道运行成功、监控系统已激活。确认无误后，触发生产部署流程，将应用正式发布。”  
-* **完成标准:**  
-  * 所有端到端测试100%通过。  
-  * CI/CD管道能够自动化地将应用成功部署到生产环境。  
-  * `project-shipper` 确认应用在生产URL上功能正常，核心用户流程无误。  
-* **交接文档更新:** `project-shipper` 在应用成功上线后，必须在 `Worknotes/stage-7-integration-deployment-and-launch.md` 的最顶部添加最终的生产应用URL，并附上项目成功上线的最终声明。
+* **目标:** 将应用部署到生产环境，建立监控，并正式发布。
+* **智能体:** `studio-coach`, `api-tester`, `devops-automator`, `infrastructure-maintainer`, `project-shipper`
+* **智能体都要输入:** `Worknotes/stage-8-integration-deployment-and-launch.md`
+* **任务执行 (协作流程):**
+  1. **端到端测试 (E2E Testing):**
+     * 指令 **`api-tester`**：“读取 `docs/api-spec.md`、`Worknotes/stage-6-backend-development.md` 和 `Worknotes/stage-7-integration.md`。针对已完成集成的应用，执行一次完整的端到端测试，模拟真实用户的核心操作流（如注册-\>登录-\>核心功能-\>退出）。验证从UI到数据库的完整链路。将详尽的测试报告保存到 `testing/e2e-report.md`。”
+  2. **构建自动化部署管道 (CI/CD Pipeline):**
+     * 指令 **`devops-automator`**：“分析项目的`docs/tech-stack.md`技术栈。创建自动化CI/CD管道（例如，使用GitHub Actions），该管道必须能自动完成测试、构建和部署流程。将CI/CD配置文件（如 .github/workflows/deploy.yml）保存到代码库。”
+  3. **生产环境准备与监控 (Production Setup):**
+     * 指令 **`infrastructure-maintainer`**：“根据 `docs/fullstack-architecture.md`和`docs/tech-stack.md`，配置生产环境。设置实时的性能监控、日志聚合和关键错误警报系统。确保应用具备弹性伸缩能力以应对流量高峰。”
+  4. **正式上线 (Go-Live):**
+     * 指令 **`project-shipper`**：“这是最终的上线决策。请执行发布前检查清单，确认 `testing/e2e-report.md` 测试通过、CI/CD管道运行成功、监控系统已激活。确认无误后，触发生产部署流程，将应用正式发布。”
+* **完成标准:**
+  * 所有端到端测试100%通过。
+  * CI/CD管道能够自动化地将应用成功部署到生产环境。
+  * `project-shipper` 确认应用在生产URL上功能正常，核心用户流程无误。
+* **交接文档更新:** `project-shipper` 在应用成功上线后，必须在 `Worknotes/stage-8-integration-deployment-and-launch.md` 的最顶部添加最终的生产应用URL，并附上项目成功上线的最终声明。
