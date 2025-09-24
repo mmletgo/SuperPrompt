@@ -19,11 +19,11 @@
 * **智能体都要输入:** `Worknotes/stage-8-integration-deployment-and-launch.json`
 * **任务执行 (协作流程):**
   1. **端到端测试 (E2E Testing):**
-     * 指令 **`api-tester`**：“读取 `docs/api-spec.md`、`Worknotes/stage-6-backend-development.json` 和 `Worknotes/stage-7-integration.json`。针对已完成集成的应用，执行一次完整的端到端测试，模拟真实用户的核心操作流（如注册->登录->核心功能->退出）。验证从UI到数据库的完整链路。将详尽的测试报告保存到 `testing/e2e-report.md`。”
+     * 指令 **`api-tester`**：“读取 `docs/api-spec.md`、`Worknotes/stage-6-backend-development.json` 和 `Worknotes/stage-7-integration.json`。针对已完成集成的应用，执行一次完整的端到端测试，模拟真实用户的核心操作流（如注册->登录->核心功能->退出）。验证从UI到数据库的完整链路。将详尽的测试报告保存到 `testing/e2e-report.md`。在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。”
   2. **构建自动化部署管道 (CI/CD Pipeline):**
-     * 指令 **`devops-automator`**：“分析项目的`docs/tech-stack.md`技术栈。创建自动化CI/CD管道（例如，使用GitHub Actions），该管道必须能自动完成测试、构建和部署流程。将CI/CD配置文件（如 .github/workflows/deploy.yml）保存到代码库。”
+     * 指令 **`devops-automator`**：“分析项目的`docs/tech-stack.md`技术栈。创建自动化CI/CD管道（例如，使用GitHub Actions），该管道必须能自动完成测试、构建和部署流程。将CI/CD配置文件（如 .github/workflows/deploy.yml）保存到代码库。在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。”
   3. **生产环境准备与监控 (Production Setup):**
-     * 指令 **`infrastructure-maintainer`**：“根据 `docs/fullstack-architecture.md`和`docs/tech-stack.md`，配置生产环境。设置实时的性能监控、日志聚合和关键错误警报系统。确保应用具备弹性伸缩能力以应对流量高峰。”
+     * 指令 **`infrastructure-maintainer`**：“根据 `docs/fullstack-architecture.md`和`docs/tech-stack.md`，配置生产环境。设置实时的性能监控、日志聚合和关键错误警报系统。确保应用具备弹性伸缩能力以应对流量高峰。在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。”
   4. **正式上线 (Go-Live):**
      * 指令 **`project-shipper`**：“这是最终的上线决策。请执行发布前检查清单，确认 `testing/e2e-report.md` 测试通过、CI/CD管道运行成功、监控系统已激活。确认无误后，触发生产部署流程，将应用正式发布。”
 * **完成标准:**

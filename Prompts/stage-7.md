@@ -30,8 +30,8 @@
 * **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
   * **调度:** 你针对该任务，同时调用 `frontend-developer` 和 `api-tester`，并将 `Worknotes/stage-7-integration.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
-    * `frontend-developer`: 立即开始移除前端代码中的模拟数据，并调用真实的后端API。
-    * `api-tester`: 立即开始编写端到端的集成测试脚本，并确保所有测试文件都存储在 `tests/` 目录下。
+    * `frontend-developer`: 立即开始移除前端代码中的模拟数据，并调用真实的后端API。在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。
+    * `api-tester`: 立即开始编写端到端的集成测试脚本，并确保所有测试文件都存储在 `tests/` 目录下。在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。
   * **开发-测试循环:**
     1. `frontend-developer` 完成初步集成后，通知 `api-tester`。
     2. `api-tester` 使用已编写的测试脚本进行端到端测试。
@@ -42,11 +42,11 @@
 * **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
   * **步骤 1: 并行集成开发**
     * **调度:** 你为所有符合条件的任务并行调用 `frontend-developer`，并将 `Worknotes/stage-7-integration.json` 中的任务状态更新为“in_progress”。
-    * **执行:** 每个 `frontend-developer` 根据任务需求完成前端与后端的集成。
+    * **执行:** 每个 `frontend-developer` 根据任务需求完成前端与后端的集成。在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。
     * **状态更新:** 开发完成后，`frontend-developer` 将 `Worknotes/stage-7-integration.json` 中对应任务的状态更新为“pending_test”。
   * **步骤 2: 并行测试**
     * **调度:** 你确认本批所有集成任务均已完成后，为所有“pending_test”的任务并行调用 `api-tester`。
-    * **执行:** 每个 `api-tester` 编写并执行端到端集成测试，并确保所有测试文件都存储在 `tests/` 目录下。
+    * **执行:** 每个 `api-tester` 编写并执行端到端集成测试，并确保所有测试文件都存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
     * **状态更新:**
       * **如果测试通过:** `api-tester` 将 `Worknotes/stage-7-integration.json` 中的任务状态更新为“completed”。
       * **如果测试失败:** `api-tester` 将 `Worknotes/stage-7-integration.json` 中的任务状态更新为“pending_fix”，并将失败日志保存到 `tests/reports/` 目录。

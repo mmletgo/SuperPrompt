@@ -26,8 +26,8 @@
 * **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
   * **调度:** 你针对该任务，同时调用 `frontend-developer` 和 `test-writer-fixer`，并将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
-    * `frontend-developer`: 立即开始功能开发。
-    * `test-writer-fixer`: 立即开始编写测试用例，并确保所有测试文件都存储在 `tests/` 目录下。
+    * `frontend-developer`: 立即开始功能开发。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
+    * `test-writer-fixer`: 立即开始编写测试用例，并确保所有测试文件都存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
   * **开发-测试循环:**
     1. `frontend-developer` 完成初步开发后，通知已准备好的 `test-writer-fixer`。
     2. `test-writer-fixer` 使用已编写的测试用例进行测试。
@@ -38,11 +38,11 @@
 * **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
   * **步骤 1: 并行功能开发**
     * **调度:** 你为所有符合条件的任务（无依赖任务或所有依赖任务均已“completed”）并行调用 `frontend-developer`，并将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“in_progress”。
-    * **执行:** 每个 `frontend-developer` 根据任务需求完成功能开发。
+    * **执行:** 每个 `frontend-developer` 根据任务需求完成功能开发。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
     * **状态更新:** 开发完成后，`frontend-developer` 将 `Worknotes/stage-5-frontend-development.json` 中对应任务的状态更新为“pending_test”。
   * **步骤 2: 并行测试**
     * **调度:** 你确认本批所有开发任务均已完成后，为所有“pending_test”的任务并行调用 `test-writer-fixer`。
-    * **执行:** 每个 `test-writer-fixer` 编写并执行测试用例。所有新编写的测试用例文件都必须存储在 `tests/` 目录下。
+    * **执行:** 每个 `test-writer-fixer` 编写并执行测试用例。所有新编写的测试用例文件都必须存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
     * **状态更新:**
       * **如果测试通过:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“completed”。
       * **如果测试失败:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“pending_fix”，并将失败日志保存到 `tests/reports/` 目录。
