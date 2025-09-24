@@ -24,7 +24,7 @@
   3. **如果符合条件的任务数量大于 1:** 启动 **“多任务分批并行模式”**。
 
 * **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
-  * **调度:** 你针对该任务，同时调用 `backend-architect` 和 `api-tester`，并将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为“in_progress”。
+  * **调度:** 你针对该任务，同时调用 `backend-architect` 和 `api-tester`，让它们并行执行，并将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
     * `backend-architect`: 立即开始 API 端点和业务逻辑的开发。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
     * `api-tester`: 立即开始编写测试脚本（如 Postman 集合、集成测试用例），并确保所有测试文件都存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**

@@ -24,7 +24,7 @@
   3. **如果符合条件的任务数量大于 1:** 启动 **“多任务分批并行模式”**。
 
 * **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
-  * **调度:** 你针对该任务，同时调用 `frontend-developer` 和 `test-writer-fixer`，并将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“in_progress”。
+  * **调度:** 你针对该任务，同时调用 `frontend-developer` 和 `test-writer-fixer`，让它们并行执行，并将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
     * `frontend-developer`: 立即开始功能开发。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
     * `test-writer-fixer`: 立即开始编写测试用例，并确保所有测试文件都存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
