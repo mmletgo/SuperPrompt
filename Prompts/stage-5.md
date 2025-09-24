@@ -61,6 +61,6 @@
   * **输入:** `frontend-developer` 和 `test-writer-fixer` 首先读取 `Worknotes/stage-5-frontend-development.json` 来获取分配给它们的任务。然后，对于每个任务，它们必须读取该任务的 `task_document_path` 字段所指向的独立 Markdown 文档来获取所有开发和测试所需的上下文信息。在修复阶段，`frontend-developer` 还需要读取 `tests/reports/` 目录下的任务对应的日志。
   * **输出:** 所有开发完成的前端代码提交至代码仓库。所有测试用例均存储在 `tests/` 目录中。测试失败时，报告和日志保存在 `tests/reports/` 目录。`Worknotes/stage-5-frontend-development.json` 的任务状态被实时、准确地更新。
 
-* **交接文档更新:** 在所有任务都标记为“completed”后，你指派一个 `frontend-developer` 读取 `Worknotes/stage-5-frontend-development.json`，在 `summary` 和 `next_stage_suggestions` 字段中记录工作摘要、对下一阶段的建议和项目运行说明，然后将更新后的 JSON 对象写回文件。
-
 * **完成度验证机制:** 为确保任务无遗漏，当所有任务完成后，你必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是最终审核 `Worknotes/stage-5-frontend-development.json` 中的原始任务清单，确保所有任务都已被确认为“completed”。若发现未完成项，则必须将任务打回，并重新启动相应的开发/修复流程，直至所有任务被确认为100%完成。
+
+* **交接文档更新:** 在所有任务都标记为“completed”后，你指派一个 `frontend-developer` 读取 `Worknotes/stage-5-frontend-development.json`，在 `summary` 和 `next_stage_suggestions` 字段中记录工作摘要、对下一阶段的建议和项目运行说明，然后将更新后的 JSON 对象写回文件，然后清理删除本阶段开发中生成的项目不需要的临时代码文件或日志文件(不要删除docs和Worknotes文件夹内部的文件)。
