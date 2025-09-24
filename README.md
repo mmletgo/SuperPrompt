@@ -86,7 +86,7 @@
 
 ## 项目初始化的任务执行
 ### 项目初始化
-- 在项目的需求文档，UX文档，架构文档准备好之后，在项目目录里运行claude，在claude里执行/init，生成CLAUDE.MD
+- 使用项目脚手架脚本创建好项目文件夹后，进入项目文件夹，把项目的需求文档，UX文档，架构文档放进里面的docs文件夹，在项目文件夹运行claude，在claude里执行/init，生成CLAUDE.MD
 ### serana启动
 - claude中执行/mcp__serena__initial_instructions，如果无法执行这个命令，就要求“读取 Serena 的初始说明”
 - 把上一步执行后得到的提示词存入项目里的CLAUDE.MD中

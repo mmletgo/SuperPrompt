@@ -23,8 +23,10 @@
 
 #### 用户执行
 **执行项目初始化:**
-  * 阅读 `docs/scaffold-guide.md` 文件，确认项目初始化所需的命令和配置，并执行命令，比如npm create t3-app@latest do-j-pm。
+  * 阅读 `docs/scaffold-guide.md` 文件，确认项目初始化所需的命令和配置，并执行命令，比如npm create t3-app@latest do-j-pm，这会创建项目文件夹。
   * **交互式配置指导:** 由于此命令是交互式的，需要根据 `docs/scaffold-guide.md` 中的“配置选项”部分进行选择。
+  * 把项目的需求文档，UX文档，架构文档放进项目文件夹的docs文件夹里。
+  * 进入项目文件夹，重新启动claude,执行claude和serena的初始化操作。详见README.md。
 
 **指令2: 初始化项目并配置环境 (Initialize Project & Configure Environment):**
 
