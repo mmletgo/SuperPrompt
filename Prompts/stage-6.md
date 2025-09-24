@@ -27,7 +27,7 @@
   * **调度:** 你针对该任务，同时调用 `backend-architect` 和 `api-tester`，并将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
     * `backend-architect`: 立即开始 API 端点和业务逻辑的开发。
-    * `api-tester`: 立即开始编写测试脚本（如 Postman 集合、集成测试用例）。
+    * `api-tester`: 立即开始编写测试脚本（如 Postman 集合、集成测试用例），并确保所有测试文件都存储在 `tests/` 目录下。
   * **开发-测试循环:**
     1. `backend-architect` 完成初步开发后，通知 `api-tester`。
     2. `api-tester` 使用已编写的测试脚本进行接口测试。
@@ -38,7 +38,7 @@
 * **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
   * **步骤 1: 并行功能开发**
     * **调度:** 你为所有符合条件的任务（无依赖任务或所有依赖任务均已“completed”）并行调用 `backend-architect`，并将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为“in_progress”。
-    * **执行:** 每个 `backend-architect` 根据任务需求完成 API 开发。
+    * **执行:** 每个 `backend-architect` 根据任务需求完成 API 开发，并确保所有测试文件都存储在 `tests/` 目录下。
     * **状态更新:** 开发完成后，`backend-architect` 将 `Worknotes/stage-6-backend-development.json` 中对应任务的状态更新为“pending_test”。
   * **步骤 2: 并行测试**
     * **调度:** 你确认本批所有开发任务均已完成后，为所有“pending_test”的任务并行调用 `api-tester`。
@@ -59,7 +59,7 @@
 
 * **输入/输出规范:**
   * **输入:** `backend-architect` 和 `api-tester` 首先读取 `Worknotes/stage-6-backend-development.json` 来获取分配给它们的任务。然后，对于每个任务，它们必须读取该任务的 `task_document_path` 字段所指向的独立 Markdown 文档来获取所有开发和测试所需的上下文信息。在修复阶段，`backend-architect` 还需要读取 `tests/reports/` 目录下的任务对应的日志。
-  * **输出:** 所有开发完成的后端代码提交至代码仓库。API 测试脚本或集合。`Worknotes/stage-6-backend-development.json` 的任务状态被实时、准确地更新。测试失败时，报告和日志保存在 `tests/reports/` 目录。
+  * **输出:** 所有开发完成的后端代码提交至代码仓库。所有测试用例均存储在 `tests/` 目录中。`Worknotes/stage-6-backend-development.json` 的任务状态被实时、准确地更新。测试失败时，报告和日志保存在 `tests/reports/` 目录。
 
 * **完成度验证机制:** 为确保任务无遗漏，当所有任务完成后，你必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是最终审核 `Worknotes/stage-6-backend-development.json` 中的原始任务清单，确保所有任务都已被确认为“completed”。若发现未完成项，则必须将任务打回，并重新启动相应的开发/修复流程，直至所有任务被确认为100%完成。
 

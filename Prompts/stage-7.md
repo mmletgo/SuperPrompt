@@ -31,7 +31,7 @@
   * **调度:** 你针对该任务，同时调用 `frontend-developer` 和 `api-tester`，并将 `Worknotes/stage-7-integration.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
     * `frontend-developer`: 立即开始移除前端代码中的模拟数据，并调用真实的后端API。
-    * `api-tester`: 立即开始编写端到端的集成测试脚本。
+    * `api-tester`: 立即开始编写端到端的集成测试脚本，并确保所有测试文件都存储在 `tests/` 目录下。
   * **开发-测试循环:**
     1. `frontend-developer` 完成初步集成后，通知 `api-tester`。
     2. `api-tester` 使用已编写的测试脚本进行端到端测试。
@@ -46,7 +46,7 @@
     * **状态更新:** 开发完成后，`frontend-developer` 将 `Worknotes/stage-7-integration.json` 中对应任务的状态更新为“pending_test”。
   * **步骤 2: 并行测试**
     * **调度:** 你确认本批所有集成任务均已完成后，为所有“pending_test”的任务并行调用 `api-tester`。
-    * **执行:** 每个 `api-tester` 编写并执行端到端集成测试。
+    * **执行:** 每个 `api-tester` 编写并执行端到端集成测试，并确保所有测试文件都存储在 `tests/` 目录下。
     * **状态更新:**
       * **如果测试通过:** `api-tester` 将 `Worknotes/stage-7-integration.json` 中的任务状态更新为“completed”。
       * **如果测试失败:** `api-tester` 将 `Worknotes/stage-7-integration.json` 中的任务状态更新为“pending_fix”，并将失败日志保存到 `tests/reports/` 目录。
@@ -66,12 +66,8 @@
     1. **任务清单:** 所有智能体首先读取 `Worknotes/stage-7-integration.json` 文件来获取任务分配和状态。
     2. **任务专属文档:** 对于每个具体任务，`frontend-developer` 和 `api-tester` **必须**读取该任务JSON对象中 `task_document_path` 字段指向的独立Markdown文档，以获取开发和测试所需的全部上下文信息。
     3. **修复日志:** 在修复阶段，开发人员还需要读取 `tests/reports/` 目录下的相关失败日志。
-  * **输出:** 更新后的前端代码提交至代码仓库。端到端测试脚本。`Worknotes/stage-7-integration.json` 的任务状态被实时、准确地更新。测试失败时，报告和日志保存在 `tests/reports/` 目录。
+  * **输出:** 更新后的前端代码提交至代码仓库。所有端到端测试脚本，测试用例均存储在 `tests/` 目录中。`Worknotes/stage-7-integration.json` 的任务状态被实时、准确地更新。测试失败时，报告和日志保存在 `tests/reports/` 目录。
 
 * **完成度验证机制:** 为确保任务无遗漏，当所有任务完成后，你必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是最终审核 `Worknotes/stage-7-integration.json` 中的原始任务清单，确保所有任务都已被确认为“completed”。若发现未完成项，则必须将任务打回，并重新启动相应的集成/修复流程，直至所有任务被确认为100%完成。
 
 * **交接文档更新:** 在所有任务都标记为“completed”后，你指派一个 `frontend-developer` 读取 `Worknotes/stage-7-integration.json`，在 `summary` 和 `next_stage_suggestions` 字段中记录工作摘要、端到端测试结果、以及对下一阶段（部署上线）的建议，然后将更新后的 JSON 对象写回文件。
-  * **输入:** `frontend-developer` 读取 `Worknotes/stage-7-integration.json` 和 `docs/api-spec.md`。`api-tester` 读取 `Worknotes/stage-7-integration.json`。修复阶段，开发者需要读取 `tests/reports/` 目录下的相关日志。
-  * **输出:** 更新后的前端和后端代码。`Worknotes/stage-7-integration.json` 的任务状态被实时、准确地更新。测试失败时，报告和日志保存在 `tests/reports/` 目录。
-
-* **交接文档更新:** 在所有任务都标记为“completed”后，你指派一个 `frontend-developer` 读取 `Worknotes/stage-7-integration.json`，在 `summary` 字段中追加最终的工作摘要和对下一阶段的建议，然后将更新后的 JSON 对象写回文件。
