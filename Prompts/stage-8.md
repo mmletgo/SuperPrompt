@@ -11,7 +11,7 @@
      * **创建独立Markdown文件:** 在 `Worknotes/tasks/stage8/` 目录下创建一个独立的 Markdown 文件，文件名应清晰地反映任务内容（例如 `setup-ci-cd-pipeline.md`）。
      * **填充文档内容:** 从所有相关源文档中提取并整合与该任务**直接相关**的所有信息，写入新创建的 Markdown 文件中。内容应包括详细的步骤、配置信息、相关脚本和预期的输出。
      * **更新主JSON文件:** `sprint-prioritizer` 必须将新创建的 Markdown 文件的相对路径更新到 `Worknotes/stage-8-integration-deployment-and-launch.json` 文件中对应任务的 `task_document_path` 字段。这个过程是逐一完成的，确保每个任务都有一个链接到其详细上下文的文档。
-
+————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 #### **指令 2: 执行部署与上线**
 
 * **目标:** 自动化地执行 `Worknotes/stage-8-integration-deployment-and-launch.json` 文件中定义的上线任务，将应用部署到生产环境，建立监控，并正式发布。
