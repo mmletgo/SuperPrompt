@@ -50,7 +50,6 @@
 ## MCP 安装
 ### serena 提供代码高效检索工具，节约agent使用的token
 - 确保系统中安装了3.13及以下版本的python，且是默认使用的python，然后执行pip install uv,安装uv和uvx工具
-- uvx --from git+https://github.com/oraios/serena serena project index 这个命令是项目级别的，新项目都需要执行
 - claude mcp add serena -- uvx --from git+https://github.com/oraios/serena serena start-mcp-server --context ide-assistant --project $(pwd) 这个命令是项目级别的，新项目都需要执行
 
 ### 智谱视觉+网络搜索MCP
@@ -88,8 +87,9 @@
 ### 项目初始化
 - 使用项目脚手架脚本创建好项目文件夹后，进入项目文件夹，把项目的需求文档，UX文档，架构文档放进里面的docs文件夹，在项目文件夹运行claude，在claude里执行/init，生成CLAUDE.MD
 ### serana启动
+- uvx --from git+https://github.com/oraios/serena serena project index 这个命令是项目级别的，新项目都需要执行
 - claude中执行/mcp__serena__initial_instructions，如果无法执行这个命令，就要求“读取 Serena 的初始说明”
-- 把上一步执行后得到的提示词存入项目里的CLAUDE.MD中
+- 把上一步执行后得到的提示词存入项目里的CLAUDE.MD中，可以直接复制我提供的serena_init.md文件中的内容
 ### shadcn-ui启动
 - 在项目脚手架工具，比如'create next-app'，初始化项目完成后，执行npx shadcn@latest init
 - 在生成的Components.json文档里，添加以下注册信息
@@ -110,7 +110,11 @@ claude --dangerously-skip-permissions
 
 
 ## 使用Prompt执行开发
-- FinalPrompt.md
+- Prompts文件夹下每个stage按阶段执行，你需要确保每个指令执行完的内容是你预期的，如果有代码，执行的时候没报错。
+- 慢即是快，garbage in garbage out，只有这样一步一个脚印，做出来的东西才是你想要的。
+- 养成习惯，每个阶段指令完成就用git版本管理
+- 注意审查每一阶段指令1生成的任务清单，如有必要，请人工修改，不要让计划里包含指令1里要求的任务范围之外的任务。
+- 注意审查每一阶段指令2生成的结果，特别是UX/UI，确保与预期相符，如果不符预期，则要让相应agent修改。
 ### 这份Prompt是怎么生成的
 - github上找到想要用的agent库，使用 https://gitingest.com/ 提取库的详细信息，保存到agent_data.md中
 - 把agent_data.md，prd.md，front-end-spec.md，fullstack-architecture.md（BMAD方法生成）丢给Gemini，然后把meta-prompt.md中的内容作为提示词，Gemini就生成了一个初版

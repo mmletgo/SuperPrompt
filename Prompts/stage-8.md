@@ -34,4 +34,4 @@
   * `Worknotes/stage-8-integration-deployment-and-launch.json` 中的所有任务状态均为 **“completed”**。
   * CI/CD管道能够自动化地将应用成功部署到生产环境。
   * `project-shipper` 在执行其最终上线任务时，确认应用在生产URL上功能正常，核心用户流程无误。
-* **交接文档更新:** `project-shipper` 在其负责的最后一个任务（通常是正式发布）完成后，必须读取 `Worknotes/stage-8-integration-deployment-and-launch.json`，在 `summary` 字段中记录最终的生产应用URL和项目成功上线的最终声明，然后将更新后的 JSON 对象写回文件，然后清理删除本阶段开发中生成的项目不需要的临时代码文件或日志文件(不要删除docs和Worknotes文件夹内部的文件)。
+* **交接文档更新:** `project-shipper` 在其负责的最后一个任务（通常是正式发布）完成后，必须读取 `Worknotes/stage-8-integration-deployment-and-launch.json`，在 `summary` 字段中记录最终的生产应用URL和项目成功上线的最终声明，然后将更新后的 JSON 对象写回文件，然后清理删除本阶段开发中生成的项目不需要的临时代码文件或日志文件(不要删除docs和Worknotes文件夹内部的文件)，接着把新增和修改的代码提交到git版本管理。
