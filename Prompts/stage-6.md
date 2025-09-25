@@ -5,7 +5,10 @@
 * **目标:** 为后端开发创建详细的任务清单，并为每个任务生成一个独立的、包含所有必需上下文的Markdown文档。
 * **智能体:** `sprint-prioritizer`
 * **任务:**
-  1. **分析与生成任务清单:** 调用 `sprint-prioritizer`，**输入宏观目标：“根据功能范围和前端需求，实现所有后端API”。**`sprint-prioritizer`必须读取`docs/prd.md`、`docs/fullstack-architecture.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/schema.md`、`docs/task_format_spec.md`，全面理解集成需求，并生成一个结构化的、按资源和功能划分的API端点开发任务清单。
+  1. **分析与生成任务清单:** 调用 `sprint-prioritizer`，**输入宏观目标："根据功能范围和前端需求，实现所有后端API，并生成完整的API文档和Swagger UI在线测试界面"。**`sprint-prioritizer`必须读取`docs/prd.md`、`docs/fullstack-architecture.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/schema.md`、`docs/task_format_spec.md`，全面理解集成需求，并生成一个结构化的、按资源和功能划分的任务清单，包括：
+     * **API端点开发任务:** 按资源和功能划分的API开发任务
+     * **API文档生成任务:** 为每个API端点生成详细的文档说明
+     * **Swagger UI部署任务:** 配置和部署在线API测试界面
   2. **填充主JSON文件:** `sprint-prioritizer` 将生成的任务列表（此时 `task_document_path` 字段为空）填充到 `Worknotes/stage-6-backend-development.json` 文件的 `tasks` 数组中。**生成的每个任务都必须严格按照 `docs/task_format_spec.md` 文件中定义的JSON结构进行创建，包含 `id`, `name`, `description`, `agent`, `status`, `dependencies`字段。此清单必须按依赖关系排序，每个子任务的 `status`字段初始值必须为 `pending`。**
   3. **创建独立任务文档并更新路径:** 对于 `Worknotes/stage-6-backend-development.json` 中 `tasks` 数组的**每一个任务**，`sprint-prioritizer` 必须执行以下操作：
      * **创建独立Markdown文件:** 在 `Worknotes/tasks/stage6/` 目录下创建一个独立的 Markdown 文件，文件名应与任务名称(name)一致(例如: `create-user-api.md`)。
@@ -32,7 +35,11 @@
     1. `backend-architect` 完成初步开发后，通知 `api-tester`。
     2. `api-tester` 使用已编写的测试脚本进行接口测试。
     3. **如果测试失败:** `api-tester` 将失败报告和日志保存到 `tests/reports/` 目录，然后将报告反馈给 `backend-architect`。`backend-architect` 修复问题，然后重新进入上一步的测试环节。
-    4. **如果测试通过:** `api-tester` 将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为“completed”。
+    4. **如果测试通过:** `api-tester` 将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为"completed"。
+    5. **API文档生成和Swagger UI部署:** 当API开发和测试完成后，`backend-architect` 必须：
+       * 为该API端点生成详细的文档说明（包括请求/响应格式、参数说明、错误码等）
+       * 配置Swagger UI，确保该API端点可以在在线界面中进行测试
+       * 验证Swagger UI界面的可访问性和功能完整性
   * **循环结束:** 任务完成后，流程返回 **“工作流调度”** 步骤。
 
 * **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
@@ -41,11 +48,15 @@
     * **执行:** 每个 `backend-architect` 根据任务需求完成 API 开发，并确保所有测试文件都存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
     * **状态更新:** 开发完成后，`backend-architect` 将 `Worknotes/stage-6-backend-development.json` 中对应任务的状态更新为“pending_test”。
   * **步骤 2: 并行测试**
-    * **调度:** 你确认本批所有开发任务均已完成后，为所有“pending_test”的任务并行调用 `api-tester`。
+    * **调度:** 你确认本批所有开发任务均已完成后，为所有"pending_test"的任务并行调用 `api-tester`。
     * **执行:** 每个 `api-tester` 编写并执行接口测试。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
     * **状态更新:**
-      * **如果测试通过:** `api-tester` 将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为“completed”。
-      * **如果测试失败:** `api-tester` 将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为“pending_fix”，并将失败日志保存到 `tests/reports/` 目录。
+      * **如果测试通过:** `api-tester` 将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为"completed"。
+      * **如果测试失败:** `api-tester` 将 `Worknotes/stage-6-backend-development.json` 中的任务状态更新为"pending_fix"，并将失败日志保存到 `tests/reports/` 目录。
+    * **API文档生成和Swagger UI部署:** 对于测试通过的任务，`backend-architect` 必须：
+      * 为该API端点生成详细的文档说明（包括请求/响应格式、参数说明、错误码等）
+      * 配置Swagger UI，确保该API端点可以在在线界面中进行测试
+      * 验证Swagger UI界面的可访问性和功能完整性
   * **步骤 3: 并行修复与回归测试**
     * **调度:** 你确认本批所有测试任务均已完成后，为所有“pending_fix”的任务并行调用 `backend-architect`。
     * **执行:** 每个 `backend-architect` 根据 `tests/reports/` 目录下的本任务对应的失败日志修复 Bug。
@@ -53,9 +64,11 @@
     * **循环:** 流程将自动返回 **步骤 2: 并行测试**，形成一个“测试-修复”的循环，直到本批所有任务都变为“completed”，流程返回 **“工作流调度”** 步骤。
 
 * **完成标准:**
-  * `Worknotes/stage-6-backend-development.json` 中的所有任务状态均为 **“completed”**。
+  * `Worknotes/stage-6-backend-development.json` 中的所有任务状态均为 **"completed"**。
   * 所有 API 端点均通过 `api-tester` 的验证，符合 `docs/api-spec.md` 的规范。
   * 后端服务能够成功构建并运行，日志中无启动时错误。
+  * **API文档完整性验收:** 所有API端点都必须有完整的文档说明，包括请求/响应格式、参数说明、错误码等。
+  * **Swagger UI功能验收:** Swagger UI界面必须能够正常访问，所有API端点都能在界面中进行在线测试，且测试功能正常运行。
 
 * **输入/输出规范:**
   * **输入:** `backend-architect` 和 `api-tester` 首先读取 `Worknotes/stage-6-backend-development.json` 来获取分配给它们的任务。然后，对于每个任务，它们必须读取该任务的 `task_document_path` 字段所指向的独立 Markdown 文档来获取所有开发和测试所需的上下文信息。在修复阶段，`backend-architect` 还需要读取 `tests/reports/` 目录下的任务对应的日志。
