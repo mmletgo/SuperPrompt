@@ -6,7 +6,7 @@
 * **智能体:** `sprint-prioritizer`
 * **任务:**
   1. **分析与生成任务清单:** 调用 `sprint-prioritizer`，**输入宏观目标：“剔除掉之前的模拟API与前端的集成，将前端所有页面和组件与后端API进行集成”。** `sprint-prioritizer` 必须读取 `docs/api-spec.md`、`Worknotes/stage-5-frontend-development.json`、`Worknotes/stage-6-backend-development.json`、`docs/task_format_spec.md`，全面理解集成需求，并生成一个结构化的任务列表。
-  2. **填充主JSON文件:** `sprint-prioritizer` 将生成的任务列表（此时 `task_document_path` 字段为空）填充到 `Worknotes/stage-7-integration.json` 文件的 `tasks` 数组中。**生成的每个任务都必须严格按照 `docs/task_format_spec.md` 文件中定义的JSON结构进行创建，包含 `id`, `name`, `description`, `agent`, `status`, `dependencies`, `outputs`, 和 `history` 字段。此清单必须按依赖关系排序，每个子任务的 `status`字段初始值必须为 `pending`。**
+  2. **填充主JSON文件:** `sprint-prioritizer` 将生成的任务列表（此时 `task_document_path` 字段为空）填充到 `Worknotes/stage-7-integration.json` 文件的 `tasks` 数组中。**生成的每个任务都必须严格按照 `docs/task_format_spec.md` 文件中定义的JSON结构进行创建，包含 `id`, `name`, `description`, `agent`, `status`, `dependencies`字段。此清单必须按依赖关系排序，每个子任务的 `status`字段初始值必须为 `pending`。**
   3. **创建独立任务文档并更新路径:** 对于 `Worknotes/stage-7-integration.json` 中 `tasks` 数组的**每一个任务**，`sprint-prioritizer` 必须执行以下操作：
      * **创建独立Markdown文件:** 在 `Worknotes/tasks/stage7/` 目录下创建一个独立的 Markdown 文件，文件名应与任务名称(name)一致(例如: `integrate-user-login-api.md`)。
      * **填充文档内容:** 从 `docs/api-spec.md`、`Worknotes/stage-5-frontend-development.json` 和 `Worknotes/stage-6-backend-development.json` 中提取并整合与该任务**直接相关**的所有信息，写入新创建的 Markdown 文件中。内容应包括但不限于：

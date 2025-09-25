@@ -13,20 +13,6 @@
       "agent": "string",
       "status": "string",
       "dependencies": ["string"],
-      "outputs": [
-        {
-          "type": "string",
-          "path": "string",
-          "description": "string"
-        }
-      ],
-      "history": [
-        {
-          "timestamp": "string",
-          "status": "string",
-          "notes": "string"
-        }
-      ]
     }
   ],
   "summary": "string",
@@ -57,6 +43,7 @@
     *   **目的:** 避免子智能体在执行具体任务时需要读取大量通用文档，为每个任务提供一个精确、独立的上下文环境。
     *   **格式:** 必须是一个指向 `Worknotes/` 目录下某个文件的相对路径。
     *   **示例:** `Worknotes/tasks/stage5/task1-implement-login-ui.md`。
+    *   **注意:** 本字段是可选字段，agent根据任务需求决定是否填写。
 
 *   **`agent` (string):**
     *   **作用:** 指定负责执行此任务的智能体名称。
@@ -74,17 +61,3 @@
 *   **`dependencies` (Array of strings):**
     *   **作用:** 此任务依赖的其他任务的 `id` 列表。
     *   **示例:** `["stage2-task1"]`。
-
-*   **`outputs` (Array of objects):**
-    *   **作用:** 任务完成后生成的产出物列表。
-    *   **每个产出物对象包含:**
-        *   `type` (string): 产出物类型 (例如: `file`, `api_endpoint`, `database_schema`)。
-        *   `path` (string): 产出物的路径或标识符 (例如: 文件路径, URL)。
-        *   `description` (string): 对产出物的简要描述。
-
-*   **`history` (Array of objects):**
-    *   **作用:** 记录任务状态变更的历史。
-    *   **每个历史记录对象包含:**
-        *   `timestamp` (string): 状态变更的时间戳 (ISO 8601 格式)。
-        *   `status` (string): 变更后的状态。
-        *   `notes` (string, optional): 关于此次状态变更的备注。
