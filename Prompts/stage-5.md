@@ -9,7 +9,7 @@
   2. **填充主JSON文件:** `sprint-prioritizer` 将生成的任务列表（此时 `task_document_path` 字段为空）填充到 `Worknotes/stage-5-frontend-development.json` 文件的 `tasks` 数组中。**生成的每个任务都必须严格按照 `docs/task_format_spec.md` 文件中定义的JSON结构进行创建，包含 `id`, `name`, `description`, `agent`, `status`, `dependencies`字段。此清单必须按依赖关系排序，每个子任务的 `status`字段初始值必须为 `pending`。**
   3. **创建独立任务文档并更新路径:** 对于 `Worknotes/stage-5-frontend-development.json` 中 `tasks` 数组的**每一个任务**，`sprint-prioritizer` 必须执行以下操作：
      * **创建独立Markdown文件:** 在 `Worknotes/tasks/stage5/` 目录下创建一个独立的 Markdown 文件，文件名应与任务名称(name)一致(例如: `implement-login-ui.md`)。
-     * **填充文档内容:** 从所有相关源文档中提取并整合与该任务**直接相关**的所有信息，写入新创建的 Markdown 文件中。内容应包括详细的步骤、相关的UI设计稿截图、组件规格、API端点、交互逻辑、以及任何特定的技术要求。**重要：必须明确指出该任务需要实现的具体视觉效果、动画、样式细节，确保开发者能够准确还原designs/ui/中的设计稿，而不是使用shadcn/ui的默认样式。**
+     * **填充文档内容:** 从所有相关源文档中提取并整合与该任务**直接相关**的所有信息，写入新创建的 Markdown 文件中。内容应包括详细的步骤、**`designs/ui/`中的相关UI设计稿html、`designs/ui/design-spec.md`中的组件规格、设计规范，`designs/ux/`中的相关用户流程、线框图、交互逻辑，`docs/api-spec.md`中的API端点、以及任何特定的技术要求**，**注意，不要捏造内容，要完全从已有的文件中提取内容**。**重要：必须明确指出该任务需要实现的具体视觉效果、动画、样式细节，确保开发者能够准确还原designs/ui/中的设计稿，而不是使用shadcn/ui的默认样式。**
      * **更新主JSON文件:** `sprint-prioritizer` 必须将新创建的 Markdown 文件的相对路径更新到 `Worknotes/stage-5-frontend-development.json` 文件中对应任务的 `task_document_path` 字段。这个过程是逐一完成的，确保每个任务都有一个链接到其详细上下文的文档。
 ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 #### **指令 2: 执行前端开发**
@@ -19,7 +19,7 @@
 * **任务说明:** 采用动态工作流调度。你根据待处理任务的数量，在“单任务并行模式”和“多任务分批并行模式”之间自动切换。
 
 * **工作流调度:**
-  1. 你持续监控 `Worknotes/stage-5-frontend-development.json`，筛选出所有状态为“pending”且（无依赖任务或所有依赖任务均已“completed”）的任务，注意，你要关注这个文件里每个任务**依赖任务**这个字段，这是每个任务所依赖的任务id，你需要根据这个严格确定依赖关系。
+  1. 你持续监控 `Worknotes/stage-5-frontend-development.json`，筛选出所有状态为“pending”且（无依赖任务或所有依赖任务均已“completed”）的任务，注意，你要关注这个文件里每个任务**dependencies**这个字段，这是每个任务所依赖的任务id，你需要根据这个严格确定依赖关系。
   2. **如果符合条件的任务数量恰好为 1:** 启动 **“单任务并行模式”**。
   3. **如果符合条件的任务数量大于 1:** 启动 **“多任务分批并行模式”**。
 
