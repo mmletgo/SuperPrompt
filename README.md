@@ -108,7 +108,8 @@
 ## 启动claude code的命令
 claude --dangerously-skip-permissions
 
-
+## 更新claude code的命令
+npm i -g @anthropic-ai/claude-code
 ## 使用Prompt执行开发
 - Prompts文件夹下每个stage按阶段执行，你需要确保每个指令执行完的内容是你预期的，如果有代码，执行的时候没报错。
 - 慢即是快，garbage in garbage out，只有这样一步一个脚印，做出来的东西才是你想要的。

@@ -55,8 +55,8 @@
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-3-api-definition.json
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-4-ui-design.json
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-4-ui-whimsy.json
-     echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-5-frontend-development.json
-     echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-6-backend-development.json
+     echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-5-backend-development.json
+     echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-6-frontend-development.json
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-7-integration.json
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-8-integration-deployment-and-launch.json
 

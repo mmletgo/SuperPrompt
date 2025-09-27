@@ -1,11 +1,11 @@
-### **第六阶段：前端开发 (Frontend Development)**
+### **第五阶段：前端开发 (Frontend Development)**
 
 #### **指令 1: 生成任务清单**
 
 * **目标:** 创建一个按组件和页面划分的、优先级明确的前端开发任务清单，并为每个任务生成一个独立的、包含所有必需上下文的Markdown文档。
 * **智能体:** `sprint-prioritizer`
 * **任务:**
-  1. **分析与生成任务清单:** 调用 `sprint-prioritizer`，**输入宏观目标："严格按照designs/ui/设计稿实现应用的所有前端功能，确保界面效果与设计稿完全一致"。** `sprint-prioritizer` 必须读取 `designs/ux/`、`designs/ui/`、`designs/ui/design-spec.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/task_format_spec.md`，全面理解需求，并生成一个结构化的、按依赖关系和优先级排序的任务列表。**特别注意：所有UI组件和界面必须严格遵循designs/ui/中的设计稿，不能仅使用shadcn/ui的原始组件样式，必须在此基础上添加自定义样式、动效和视觉效果以匹配设计稿。** 任务清单需按以下任务类别顺序组织：**1. 组件开发；2. 根据 `docs/api-spec.md` 创建模拟 API(所有模拟api都应放入api文件夹下新建的一个文件夹内，而不是直接放在预留给正式api的api文件夹中)；3. 应用程序布局和页面开发；4. 将 UI 连接到模拟 API。**
+  1. **分析与生成任务清单:** 调用 `sprint-prioritizer`，**输入宏观目标："严格按照designs/ui/设计稿实现应用的所有前端功能，确保界面效果与设计稿完全一致"。** `sprint-prioritizer` 必须读取 `designs/ux/`、`designs/ui/`、`designs/ui/design-spec.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/task_format_spec.md`，全面理解需求，并生成一个结构化的、按依赖关系和优先级排序的任务列表。**特别注意：所有UI组件和界面必须严格遵循designs/ui/中的设计稿，不能仅使用shadcn/ui的原始组件样式，必须在此基础上添加自定义样式、动效和视觉效果以匹配设计稿。** 任务清单需按以下任务类别顺序组织：1. 组件开发；2. 根据 `docs/api-spec.md` 创建模拟 API(所有模拟api都应放入api文件夹下新建的一个文件夹内，而不是直接放在预留给正式api的api文件夹中)；3. 应用程序布局和页面开发；4. 将 UI 连接到模拟 API。
   2. **填充主JSON文件:** `sprint-prioritizer` 将生成的任务列表（此时 `task_document_path` 字段为空）填充到 `Worknotes/stage-5-frontend-development.json` 文件的 `tasks` 数组中。**生成的每个任务都必须严格按照 `docs/task_format_spec.md` 文件中定义的JSON结构进行创建，包含 `id`, `name`, `description`, `agent`, `status`, `dependencies`字段。此清单必须按依赖关系排序，每个子任务的 `status`字段初始值必须为 `pending`。**
   3. **创建独立任务文档并更新路径:** 对于 `Worknotes/stage-5-frontend-development.json` 中 `tasks` 数组的**每一个任务**，`sprint-prioritizer` 必须执行以下操作：
      * **创建独立Markdown文件:** 在 `Worknotes/tasks/stage5/` 目录下创建一个独立的 Markdown 文件，文件名应与任务名称(name)一致(例如: `implement-login-ui.md`)。
@@ -20,9 +20,10 @@
 
 * **工作流调度:**
   1. 你持续监控 `Worknotes/stage-5-frontend-development.json`，筛选出所有状态为“pending”且（无依赖任务或所有依赖任务均已“completed”）的任务，注意，你要关注这个文件里每个任务**dependencies**这个字段，这是每个任务所依赖的任务id，你需要根据这个严格确定依赖关系。
-  2. 同时为每个符合条件的任务启动 **“单任务并行模式”**，同时调用`frontend-developer` 和 `test-writer-fixer`。
+  2. **如果符合条件的任务数量恰好为 1:** 启动 **“单任务并行模式”**。
+  3. **如果符合条件的任务数量大于 1:** 启动 **“多任务分批并行模式”**。
 
-* **模式: 单任务并行模式 (Single-Task Parallel Mode)**
+* **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
   * **调度:** 你针对该任务，同时调用 `frontend-developer` 和 `test-writer-fixer`，让它们并行执行，并将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
     * `frontend-developer`: 立即开始功能开发。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。开发过程中必须严格对照designs/ui/中的设计稿，确保每个组件的视觉效果、交互动画、颜色搭配等完全匹配设计稿要求。**
@@ -33,6 +34,23 @@
     3. **如果测试失败:** `test-writer-fixer` 将失败报告和日志保存到 `tests/reports/` 目录，然后将报告反馈给 `frontend-developer`。`frontend-developer` 修复问题，然后重新进入上一步的测试环节。
     4. **如果测试通过:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“completed”。
   * **循环结束:** 任务完成后，流程返回 **“工作流调度”** 步骤。
+
+* **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
+  * **步骤 1: 并行功能开发**
+    * **调度:** 你为所有符合条件的任务（无依赖任务或所有依赖任务均已“completed”）并行调用 `frontend-developer`，并将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“in_progress”。
+    * **执行:** 每个 `frontend-developer` 根据任务需求完成功能开发。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。开发过程中必须严格参照designs/ui/设计稿，实现精确的视觉效果，包括但不限于：颜色值、字体大小、组件间距、圆角半径、阴影效果、动画过渡等所有设计细节。**
+    * **状态更新:** 开发完成后，`frontend-developer` 将 `Worknotes/stage-5-frontend-development.json` 中对应任务的状态更新为“pending_test”。
+  * **步骤 2: 并行测试**
+    * **调度:** 你确认本批所有开发任务均已完成后，为所有“pending_test”的任务并行调用 `test-writer-fixer`。
+    * **执行:** 每个 `test-writer-fixer` 编写并执行测试用例。所有新编写的测试用例文件都必须存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。测试用例必须包含UI视觉效果验证，通过截图对比或样式检查等方式确保实现的界面与designs/ui/设计稿完全一致。**
+    * **状态更新:**
+      * **如果测试通过:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“completed”。
+      * **如果测试失败:** `test-writer-fixer` 将 `Worknotes/stage-5-frontend-development.json` 中的任务状态更新为“pending_fix”，并将失败日志保存到 `tests/reports/` 目录。
+  * **步骤 3: 并行修复与回归测试**
+    * **调度:** 你确认本批所有测试任务均已完成后，为所有“pending_fix”的任务并行调用 `frontend-developer`。
+    * **执行:** 每个 `frontend-developer` 根据 `tests/reports/` 目录下的本任务对应的失败日志修复 Bug。
+    * **状态更新:** 修复完成后，`frontend-developer` 将 `Worknotes/stage-5-frontend-development.json` 中的任务状态重新更新为“pending_test”。
+    * **循环:** 流程将自动返回 **步骤 2: 并行测试**，形成一个“测试-修复”的循环，直到本批所有任务都变为“completed”，流程返回 **“工作流调度”** 步骤。
 
 * **完成标准:**
   * `Worknotes/stage-5-frontend-development.json` 中的所有任务状态均为 **"completed"**。

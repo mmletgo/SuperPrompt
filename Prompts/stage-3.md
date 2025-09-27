@@ -14,7 +14,7 @@
   * **并行轨道 1: 线框图设计 (`ux-researcher`)**  
     * **操作：** 根据用户流程，创建低保真线框图。重点关注元素定位和功能，而非视觉样式。  
     * **输入：** 读取 `designs/ux/user-flows.md`、`docs/front-end-spec.md` 和 `Worknotes/stage-3-interface-layout.json` 文件。  
-    * **输出：** 将线框图描述和简单布局保存到 `designs/ux/wireframes.md`，并更新 `Worknotes/stage-3-interface-layout.json` 中的任务状态为“completed”。  
+    * **输出：** 将每个页面的详细线框图和对应设计规范都分别都保存到 `designs/ux/wireframes/`文件夹下的一个单独md文档,并更新 `Worknotes/stage-3-interface-layout.json` 中的任务状态为“completed”。  
   * **并行轨道 2: API规范定义 (`backend-architect`)**  
     * **操作：** 使用 OpenAPI 3.0 格式创建详细的 API 规范。定义前端运行所需的所有端点、请求负载和响应对象。  
     * **输入：** 读取 `docs/fullstack-architecture.md`（第 5 节）、`designs/ux/user-flows.md` 和 `Worknotes/stage-3-api-definition.json`。
@@ -24,4 +24,5 @@
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 ## 用户操作
 - 检查线框图是否符合你的预期，否则让ux-researcher继续修改直至符合你的预期再进行下一步
+- 可以让ux-researcher再次核对prd.md，检查用户流程图和线框图是否缺少了功能
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
