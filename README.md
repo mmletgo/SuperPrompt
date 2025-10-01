@@ -2,7 +2,7 @@
 - https://nodejs.org/en/download 安装指示安装node.js和npm工具
 - npm install -g @anthropic-ai/claude-code
 
-## 智谱glm4.5的配置
+## 智谱glm4.6的配置
 - curl -O "http://bigmodel-us3-prod-marketplace.cn-wlcb.ufileos.com/1753683727739-0b3a4f6e84284f1b9afa951ab7873c29.sh?ufileattname=claude_code_prod.sh"
 - bash "1753683727739-0b3a4f6e84284f1b9afa951ab7873c29.sh"
 
@@ -58,6 +58,12 @@
 
 ### Context7 最新api文档检索工具，节约token，提供最新文档
 - claude mcp add --transport http context7 https://mcp.context7.com/mcp --header "CONTEXT7_API_KEY: <CONTEXT7的token>"
+
+### chrome浏览器mcp
+claude mcp add chrome-devtools -s user -- npx chrome-devtools-mcp@latest
+
+### playwright mcp 已被chrome-devtools代替，可以不装
+claude mcp add playwright -s user -- npx @playwright/mcp@latest
 
 ### supabase 线上supabase数据库连接mcp
 - claude mcp add supabase -s local -e SUPABASE_ACCESS_TOKEN=<supabase用户的token> -- npx -y @supabase/mcp-server-supabase@latest

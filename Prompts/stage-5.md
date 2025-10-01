@@ -2,18 +2,15 @@
 
 #### **指令 1: 生成任务清单**
 
-* **目标:** 为后端开发创建详细的任务清单，并为每个任务生成一个独立的、包含所有必需上下文的Markdown文档。
+* **目标:** 为后端开发阶段创建详细的、按依赖关系和优先级排序的后端开发任务清单。
 * **智能体:** `sprint-prioritizer`
 * **任务:**
-  1. **分析与生成任务清单:** 调用 `sprint-prioritizer`，**输入宏观目标："根据功能范围和前端需求，实现所有后端API，并生成完整的API文档和Swagger UI在线测试界面"。**`sprint-prioritizer`必须读取`docs/prd.md`、`docs/fullstack-architecture.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/schema.md`、`docs/task_format_spec.md`、`designs/ux/user-flows.md`，全面理解集成需求，并生成一个结构化的、按资源和功能划分的任务清单，包括：
-     * **API端点开发任务:** 按资源和功能划分的API开发任务
-     * **API文档生成任务:** 为每个API端点生成详细的文档说明
-     * **Swagger UI部署任务:** 配置和部署在线API测试界面
-  2. **填充主JSON文件:** `sprint-prioritizer` 将生成的任务列表（此时 `task_document_path` 字段为空）填充到 `Worknotes/stage-5-backend-development.json` 文件的 `tasks` 数组中。**生成的每个任务都必须严格按照 `docs/task_format_spec.md` 文件中定义的JSON结构进行创建，包含 `id`, `name`, `description`, `agent`, `status`, `dependencies`字段。此清单必须按依赖关系排序，每个子任务的 `status`字段初始值必须为 `pending`。**
-  3. **创建独立任务文档并更新路径:** 对于 `Worknotes/stage-5-backend-development.json` 中 `tasks` 数组的**每一个任务**，`sprint-prioritizer` 必须执行以下操作：
-     * **创建独立Markdown文件:** 在 `Worknotes/tasks/stage5/` 目录下创建一个独立的 Markdown 文件，文件名应与任务名称(name)一致(例如: `create-user-api.md`)。
-     * **填充文档内容:** 从所有相关源文档中提取并整合与该任务**直接相关**的所有信息，写入新创建的 Markdown 文件中。内容应包括详细的步骤、相关的API设计(入参+出参)、数据模型、业务逻辑、以及任何特定的技术要求，**注意不要写入实现代码**。
-     * **更新主JSON文件:** `sprint-prioritizer` 必须将新创建的 Markdown 文件的相对路径更新到 `Worknotes/stage-5-backend-development.json` 文件中对应任务的 `task_document_path` 字段。这个过程是逐一完成的，确保每个任务都有一个链接到其详细上下文的文档。
+  1. **分析与生成任务清单:** 调用 `sprint-prioritizer`，**输入宏观目标："根据功能范围和前端需求，实现所有后端API，并生成完整的API文档和Swagger UI在线测试界面"。** `sprint-prioritizer`必须读取`docs/prd.md`、`docs/fullstack-architecture.md`、`docs/feature-scope.md`、`docs/api-spec.md`、`docs/tech-stack.md`、`docs/schema.md`、`docs/task_format_spec.md`、`designs/ux/user-flows.md`，全面理解集成需求，并生成一个结构化的、按资源和功能划分的任务清单。任务清单需按以下类别顺序组织：
+     * **基础设施搭建:** 项目初始化、数据库配置、环境配置等
+     * **数据层开发:** 数据模型定义、数据库迁移、数据访问层等
+     * **API端点开发:** 按资源和功能模块划分的API端点实现
+     * **文档:** API文档生成、Swagger UI配置等
+  2. **填充主JSON文件:** `sprint-prioritizer` 将生成的任务列表填充到 `Worknotes/stage-5-backend-development.json` 文件的 `tasks` 数组中。**生成的每个任务都必须严格按照 `docs/task_format_spec.md` 文件中定义的JSON结构进行创建，包含 `id`, `name`, `description`, `agent`, `status`, `dependencies`字段。此清单必须按依赖关系排序，每个子任务的 `status`字段初始值必须为 `pending`。**
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 #### **指令 2: 执行后端开发**
 
@@ -23,9 +20,10 @@
 
 * **工作流调度:**
   1. 你持续监控 `Worknotes/stage-5-backend-development.json`，筛选出所有状态为“pending”且（无依赖任务或所有依赖任务均已“completed”）的任务，注意，你要关注这个文件里每个任务**dependencies**这个字段，这是每个任务所依赖的任务id，你需要根据这个严格确定依赖关系。
-  2. 同时为每个符合条件的任务启动 **“单任务并行模式”**，同时调用`backend-architect` 和 `api-tester`。
+  2. **如果符合条件的任务数量恰好为 1:** 启动 **“单任务并行模式”**。
+  3. **如果符合条件的任务数量大于 1:** 启动 **“多任务分批并行模式”**，上限为5个一组。
 
-* **模式: 单任务并行模式 (Single-Task Parallel Mode)**
+* **模式一: 单任务并行模式 (Single-Task Parallel Mode)**
   * **调度:** 你针对该任务，同时调用 `backend-architect` 和 `api-tester`，让它们并行执行，并将 `Worknotes/stage-5-backend-development.json` 中的任务状态更新为“in_progress”。
   * **并行执行:**
     * `backend-architect`: 立即开始 API 端点和业务逻辑的开发。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
@@ -41,6 +39,27 @@
        * 验证Swagger UI界面的可访问性和功能完整性
   * **循环结束:** 任务完成后，流程返回 **“工作流调度”** 步骤。
 
+* **模式二: 多任务分批并行模式 (Multi-Task Batch Mode)**
+  * **步骤 1: 并行功能开发**
+    * **调度:** 你为所有符合条件的任务（无依赖任务或所有依赖任务均已“completed”）并行调用 `backend-architect`，并将 `Worknotes/stage-5-backend-development.json` 中的任务状态更新为“in_progress”。
+    * **执行:** 每个 `backend-architect` 根据任务需求完成 API 开发，并确保所有测试文件都存储在 `tests/` 目录下。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
+    * **状态更新:** 开发完成后，`backend-architect` 将 `Worknotes/stage-5-backend-development.json` 中对应任务的状态更新为“pending_test”。
+  * **步骤 2: 并行测试**
+    * **调度:** 你确认本批所有开发任务均已完成后，为所有"pending_test"的任务并行调用 `api-tester`。
+    * **执行:** 每个 `api-tester` 编写并执行接口测试。**在执行任务时，如果发现系统中已存在与本次开发任务相关的代码，必须优先基于现有代码进行修改和完善，而不是从头开始重写。**
+    * **状态更新:**
+      * **如果测试通过:** `api-tester` 将 `Worknotes/stage-5-backend-development.json` 中的任务状态更新为"completed"。
+      * **如果测试失败:** `api-tester` 将 `Worknotes/stage-5-backend-development.json` 中的任务状态更新为"pending_fix"，并将失败日志保存到 `tests/reports/` 目录。
+    * **API文档生成和Swagger UI部署:** 对于测试通过的任务，`backend-architect` 必须：
+      * 为该API端点生成详细的文档说明（包括请求/响应格式、参数说明、错误码等）
+      * 配置Swagger UI，确保该API端点可以在在线界面中进行测试
+      * 验证Swagger UI界面的可访问性和功能完整性
+  * **步骤 3: 并行修复与回归测试**
+    * **调度:** 你确认本批所有测试任务均已完成后，为所有“pending_fix”的任务并行调用 `backend-architect`。
+    * **执行:** 每个 `backend-architect` 根据 `tests/reports/` 目录下的本任务对应的失败日志修复 Bug。
+    * **状态更新:** 修复完成后，`backend-architect` 将 `Worknotes/stage-5-backend-development.json` 中的任务状态重新更新为“pending_test”。
+    * **循环:** 流程将自动返回 **步骤 2: 并行测试**，形成一个“测试-修复”的循环，直到本批所有任务都变为“completed”，流程返回 **“工作流调度”** 步骤。
+
 * **完成标准:**
   * `Worknotes/stage-5-backend-development.json` 中的所有任务状态均为 **"completed"**。
   * 所有 API 端点均通过 `api-tester` 的验证，符合 `docs/api-spec.md` 的规范。
@@ -49,7 +68,7 @@
   * **Swagger UI功能验收:** Swagger UI界面必须能够正常访问，所有API端点都能在界面中进行在线测试，且测试功能正常运行。
 
 * **输入/输出规范:**
-  * **输入:** `backend-architect` 和 `api-tester` 首先读取 `Worknotes/stage-5-backend-development.json` 来获取分配给它们的任务。然后，对于每个任务，它们必须读取该任务的 `task_document_path` 字段所指向的独立 Markdown 文档来获取所有开发和测试所需的上下文信息。在修复阶段，`backend-architect` 还需要读取 `tests/reports/` 目录下的任务对应的日志。
+  * **输入:** `backend-architect` 和 `api-tester` 首先读取 `Worknotes/stage-5-backend-development.json` 来获取分配给它们的任务。然后统一读取核心技术文档：`docs/api-spec.md`、`docs/tech-stack.md`、`docs/schema.md`、`designs/ux/user-flows.md`、`docs/task_format_spec.md` 来获取所有开发和测试所需的上下文信息。在修复阶段，`backend-architect` 还需要读取 `tests/reports/` 目录下的任务对应的日志。
   * **输出:** 所有开发完成的后端代码提交至代码仓库。所有测试用例均存储在 `tests/` 目录中。`Worknotes/stage-5-backend-development.json` 的任务状态被实时、准确地更新。测试失败时，报告和日志保存在 `tests/reports/` 目录。
 
 * **完成度验证机制:** 为确保任务无遗漏，当所有任务完成后，你必须重新调用 `sprint-prioritizer`。`sprint-prioritizer` 的任务是最终审核 `Worknotes/stage-5-backend-development.json` 中的原始任务清单，确保所有任务都已被确认为“completed”。若发现未完成项，则必须将任务打回，并重新启动相应的开发/修复流程，直至所有任务被确认为100%完成。
@@ -58,5 +77,5 @@
 
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 ## 用户操作
-- 检查每个API是否都能正常调用，返回信息是否符合你的预期，否则让backend-architect继续修改直至符合你的预期再进行下一步
+- 检查每个API是否都能正常调用，返回信息是否符合你的预期(让ai注册一个测试账号，测试所有api端点)，否则让backend-architect继续修改直至符合你的预期再进行下一步
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
