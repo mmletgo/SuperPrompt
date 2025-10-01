@@ -57,8 +57,7 @@
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-4-ui-whimsy.json
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-5-backend-development.json
      echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-6-frontend-development.json
-     echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-7-integration.json
-     echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-8-integration-deployment-and-launch.json
+     echo {"tasks": [], "summary": "", "next_stage_suggestions": ""} > Worknotes/stage-7-integration-deployment-and-launch.json
 
      echo "协作目录结构与工作记录JSON文件创建完成。"
 
