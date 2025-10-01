@@ -63,8 +63,6 @@ SuperPrompt/
 - **npm** 或 **yarn** - 包管理工具
 
 ### 必需账号
-
-- **Anthropic Claude API** - AI 服务
 - **智谱 GLM API** (可选) - 国内替代方案
 - **Context7 API** (可选) - 最新文档检索
 - **Supabase** (可选) - 数据库服务
