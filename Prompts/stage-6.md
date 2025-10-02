@@ -83,7 +83,7 @@
 
 ### 阶段1：启动测试
 召唤`test-writer-fixer`执行以下测试任务(**禁止创建测试页面，而是直接使用正式页面测试**)：
-1. 使用Chrome DevTools MCP和测试账号(邮箱: test2@example.com 密码: Test123456)依次测试所有页面(**流程完全按照`designs/ux/user-flows.md`**),**页面ui要完全按照`designs/ui/`中的html视觉稿实现(每个html对应一个页面)**
+1. 使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)依次测试所有页面(**流程完全按照`designs/ux/user-flows.md`**),**页面ui要完全按照`designs/ui/`中的html视觉稿实现(每个html对应一个页面)**
 2. 你需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面与视觉稿一致。
 3. 将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
 
@@ -106,6 +106,7 @@
 - 每次只给`test-writer-fixer`和`frontend-developer`一个明确的任务（测试、修复）
 - 根据任务结果决定下一步调度
 - 保持循环直到连续两轮测试无新问题发现(即**连续两轮的阶段2都检查`docs/qa.md`发现没有问题。是没发现问题！不是发现问题然后解决掉了**)
+- 即使阶段2检测到严重问题，你也不应该停下来，而是继续阶段3,让`frontend-developer`执行修复任务
 
 
 #### **指令 4: 前端验收**
@@ -122,8 +123,9 @@
 
 ### 阶段1：启动测试
 召唤`test-writer-fixer`执行以下测试任务(**禁止创建测试页面，而是直接使用正式页面测试**)：
-1. 使用Chrome DevTools MCP和测试账号(邮箱: test2@example.com 密码: Test123456)全面测试所有页面、交互跳转和功能(**流程完全按照`designs/ux/user-flows.md`**，界面ui视觉稿要完全按照`designs/ui/`)
-2. 将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
+1. 使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)全面测试所有页面、交互跳转和功能(**流程完全按照`designs/ux/user-flows.md`**，界面结构和交互要完全按照`designs/ux/wireframes/`中的各个页面和组件的md文件)
+2. 你需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面交互与线框图一致。
+3. 将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
 
 ### 阶段2：检查结果
 检查`docs/qa.md`文件状态：
@@ -142,9 +144,9 @@
 - 始终通过召唤`test-writer-fixer`和`frontend-developer`来执行具体工作
 - 每次只给`test-writer-fixer`和`frontend-developer`一个明确的任务（测试、修复）
 - 根据任务结果决定下一步调度
-- 保持循环直到连续一轮测试无新问题发现
+- 保持循环直到连续两轮测试无新问题发现(即**连续两轮的阶段2都检查`docs/qa.md`发现没有问题。是没发现问题！不是发现问题然后解决掉了**)
+- 即使阶段2检测到严重问题，你也不应该停下来，而是继续阶段3,让`frontend-developer`执行修复任务
 
-现在开始执行调度：首先召唤`test-writer-fixer`进行第一轮完整测试。
 
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 ## 用户操作
