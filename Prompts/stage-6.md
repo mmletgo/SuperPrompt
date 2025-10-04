@@ -83,7 +83,7 @@
 
 ### 阶段1：启动测试
 召唤`test-writer-fixer`执行以下测试任务(**禁止创建测试页面，而是直接使用正式页面测试**)：
-1. 使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)依次测试所有页面(**流程完全按照`designs/ux/user-flows.md`),需求完全按照`doc/prd.md`,页面ui要完全按照`designs/ui/`中的html视觉稿实现(每个html对应一个页面**)
+1. 使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)依次测试所有页面(**流程完全按照`designs/ux/user-flows.md`),需求完全按照`docs/prd.md`,页面ui要完全按照`designs/ui/`中的html视觉稿实现(每个html对应一个页面**)
 2. `test-writer-fixer`需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面与视觉稿一致。
 3. `test-writer-fixer`将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
 4. `test-writer-fixer`报告测试已完成，可以进入阶段2
@@ -123,7 +123,7 @@
 
 ### 阶段1：启动测试
 召唤`test-writer-fixer`执行以下测试任务(**禁止创建测试页面，而是直接使用正式页面测试**)：
-1. `test-writer-fixer`使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)全面测试所有页面、交互跳转和功能(**流程完全按照`designs/ux/user-flows.md`,需求完全按照`doc/prd.md`，界面结构和交互要完全按照`designs/ux/wireframes/`中的各个页面和组件的md文件**)
+1. `test-writer-fixer`使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)全面测试所有页面、交互跳转和功能(**流程完全按照`designs/ux/user-flows.md`,需求完全按照`docs/prd.md`，界面结构和交互要完全按照`designs/ux/wireframes/`中的各个页面和组件的md文件**)
 2. `test-writer-fixer`需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面交互与线框图一致。
 3. `test-writer-fixer`将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
 4. `test-writer-fixer`报告测试已完成，可以进入阶段2
