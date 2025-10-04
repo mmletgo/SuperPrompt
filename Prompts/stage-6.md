@@ -123,19 +123,20 @@
 
 ### 阶段1：启动测试
 召唤`test-writer-fixer`执行以下测试任务(**禁止创建测试页面，而是直接使用正式页面测试**)：
-1. 使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)全面测试所有页面、交互跳转和功能(**流程完全按照`designs/ux/user-flows.md`**，界面结构和交互要完全按照`designs/ux/wireframes/`中的各个页面和组件的md文件)
-2. 你需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面交互与线框图一致。
-3. 将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
+1. `test-writer-fixer`使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)全面测试所有页面、交互跳转和功能(**流程完全按照`designs/ux/user-flows.md`**，界面结构和交互要完全按照`designs/ux/wireframes/`中的各个页面和组件的md文件)
+2. `test-writer-fixer`需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面交互与线框图一致。
+3. `test-writer-fixer`将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
 
 ### 阶段2：检查结果
-检查`docs/qa.md`文件状态：
+你检查`docs/qa.md`文件状态：
 - 如果文件为空：结束流程，报告所有测试通过
 - 如果文件中有问题记录：进入修复阶段
 
 ### 阶段3：启动修复
 召唤`frontend-developer`执行以下修复任务：
-1. 解决`docs/qa.md`文件中记录的所有问题
-2. 修复完成后**清空`docs/qa.md`文件的内容**
+1. `frontend-developer`解决`docs/qa.md`文件中记录的所有问题
+2. 召唤`test-writer-fixer`验证修复结果，如果未成功修复，则打回去让`frontend-developer`继续修复，直到当前`docs/qa.md`文件中提到的问题彻底被解决
+3. 修复完成后`test-writer-fixer`**清空`docs/qa.md`文件的内容**
 
 ### 阶段4：循环控制
 重复执行阶段1→阶段2→阶段3，直到阶段2检查发现`docs/qa.md`文件为空
