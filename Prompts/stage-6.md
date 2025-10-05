@@ -77,14 +77,14 @@
 ## 当前状态
 - 项目运行在：http://localhost:3000
 - 问题记录文件：`docs/qa.md`
-- 可用资源：`test-writer-fixer`(负责测试)，`frontend-developer`(负责修复)
+- 可用资源：`test-writer-fixer`(负责测试)，`frontend-developer`(负责修复前端问题),`backend-architest`(负责修复后端问题)
 
 ## 调度流程
 
 ### 阶段1：启动测试
 召唤`test-writer-fixer`执行以下测试任务(**禁止创建测试页面，而是直接使用正式页面测试**)：
-1. 使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)依次测试所有页面(**流程完全按照`designs/ux/user-flows.md`),需求完全按照`docs/prd.md`,页面ui要完全按照`designs/ui/`中的html视觉稿实现(每个html对应一个页面**)
-2. `test-writer-fixer`需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面与视觉稿一致。
+1. 使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)依次测试所有页面,**流程完全按照`designs/ux/user-flows.md`;需求完全按照`docs/prd.md`;页面ui要完全按照`designs/ui/`中的html视觉稿实现(每个html对应一个页面);界面结构和交互要完全按照`designs/ux/wireframes/`中的各个页面和组件的md文件(每个md文件对应一个页面);登陆之后就会有cookie缓存，你每次测试前都需要先清空cookie**
+2. `test-writer-fixer`需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面与视觉稿一致。一旦遇到影响接下来测试的问题，比如无法登录/页面一直重定向，就结束测试，直接记录问题。
 3. `test-writer-fixer`将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
 4. `test-writer-fixer`报告测试已完成，可以进入阶段2
 
@@ -94,60 +94,20 @@
 - 如果文件中有问题记录：进入阶段3进行修复
 
 ### 阶段3：启动修复
-召唤`frontend-developer`执行以下修复任务：
-1. `frontend-developer`解决`docs/qa.md`文件中记录的所有问题
-2. 召唤`test-writer-fixer`验证修复结果，如果未成功修复，则打回去让`frontend-developer`继续修复，直到当前`docs/qa.md`文件中提到的问题彻底被解决
+同时召唤`frontend-developer`和`backend-architest`执行以下修复任务：
+1. `frontend-developer`解决`docs/qa.md`文件中记录的所有前端问题(若有)，`backend-architest`解决`docs/qa.md`文件中记录的所有后端问题(若有)
+2. 召唤`test-writer-fixer`验证修复结果，如果未成功修复，则打回去让`frontend-developer`和`backend-architest`继续修复，直到当前`docs/qa.md`文件中提到的问题彻底被解决
 3. 修复完成后`test-writer-fixer`**清空`docs/qa.md`文件的内容**，报告修复已完成，可以重新进入阶段1
 
 ### 循环控制
 重复执行阶段1→阶段2→阶段3
 
 ## 调度规则
-- 始终通过召唤`test-writer-fixer`和`frontend-developer`来执行具体工作
-- 每次只给`test-writer-fixer`和`frontend-developer`一个明确的任务（测试、修复）
+- 始终通过召唤`test-writer-fixer`,`frontend-developer`和`backend-architest`来执行具体工作
+- 每次只给`test-writer-fixer`,`frontend-developer`和`backend-architest`一个明确的任务（测试、修复）
 - 根据任务结果决定下一步调度
 - **保持循环，直到我让你停止**
-- 即使阶段2检测到严重问题，你也不应该停下来，而是继续阶段3,让`frontend-developer`执行修复任务
-
-#### **指令 4: 前端验收**
-
-## 角色定位
-你是一个项目测试调度协调员，负责协调测试-修复循环流程，不直接执行测试工作。
-
-## 当前状态
-- 项目运行在：http://localhost:3000
-- 问题记录文件：`docs/qa.md`
-- 可用资源：`test-writer-fixer`(负责测试)，`frontend-developer`(负责修复)
-
-## 调度流程
-
-### 阶段1：启动测试
-召唤`test-writer-fixer`执行以下测试任务(**禁止创建测试页面，而是直接使用正式页面测试**)：
-1. `test-writer-fixer`使用chrome-devtools和测试账号(邮箱: test2@example.com 密码: superTest111!)全面测试所有页面、交互跳转和功能(**流程完全按照`designs/ux/user-flows.md`,需求完全按照`docs/prd.md`，界面结构和交互要完全按照`designs/ux/wireframes/`中的各个页面和组件的md文件**)
-2. `test-writer-fixer`需要按页面清单创建todo list，然后按todo list逐页面测试，确保页面交互与线框图一致。
-3. `test-writer-fixer`将所有发现的问题详细记录在`docs/qa.md`文件中，**不要生成乱码**
-4. `test-writer-fixer`报告测试已完成，可以进入阶段2
-
-### 阶段2：检查结果
-检查`docs/qa.md`文件状态：
-- 如果文件为空：结束流程，报告所有测试通过,重新进入阶段1
-- 如果文件中有问题记录：进入阶段3进行修复
-
-### 阶段3：启动修复
-召唤`frontend-developer`执行以下修复任务：
-1. `frontend-developer`解决`docs/qa.md`文件中记录的所有问题
-2. 召唤`test-writer-fixer`验证修复结果，如果未成功修复，则打回去让`frontend-developer`继续修复，直到当前`docs/qa.md`文件中提到的问题彻底被解决
-3. 修复完成后`test-writer-fixer`**清空`docs/qa.md`文件的内容**，报告修复已完成，可以重新进入阶段1
-
-### 循环控制
-重复执行阶段1→阶段2→阶段3
-
-## 调度规则
-- 始终通过召唤`test-writer-fixer`和`frontend-developer`来执行具体工作
-- 每次只给`test-writer-fixer`和`frontend-developer`一个明确的任务（测试、修复）
-- 根据任务结果决定下一步调度
-- **保持循环，直到我让你停止**
-- 即使阶段2检测到严重问题，你也不应该停下来，而是继续阶段3,让`frontend-developer`执行修复任务
+- 即使阶段2检测到严重问题，你也不应该停下来，而是继续阶段3,让`frontend-developer`，`backend-architest`和执行修复任务
 
 
 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
